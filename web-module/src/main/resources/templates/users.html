@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-table.min.css}">
+</head>
+<body>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/bootstrap-table.min.js}"></script>
+
+<table
+        data-data-field="content"
+        data-height="460"
+        data-page-list="[3, 10, 25, 50, All]"
+        data-pagination="true"
+        data-query-params="queryParams"
+        data-side-pagination="server"
+        data-smart-display="false"
+        data-toggle="table"
+        data-total-field="totalElements"
+        data-url="/users/api/users"
+        id="table">
+    <thead>
+    <tr>
+        <th data-field="id">ID</th>
+        <th data-field="username">username</th>
+        <th data-field="email">email</th>
+        <th data-field="role">role</th>
+        <th data-field="enabled">enabled</th>
+        <th data-field="lastLogin">lastLogin</th>
+    </tr>
+    </thead>
+</table>
+<script>
+    function queryParams(params) {
+        params.page = params.offset / params.limit
+        return params
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+<!--
+<script>
+    function nameFormatter(value, row) {
+        var icon = row.id % 2 === 0 ? 'fa-star' : 'fa-star-and-crescent'
+        return '<i class="fa ' + icon + '"></i> ' + (value ? 'yes' : 'no')
+    }
+</script>-->
+</body>
+</html>
