@@ -9,10 +9,15 @@
 <form th:action="@{/orders/form}" th:method="POST">
     <div th:object="${order}">
         <label for="beginDate">From:</label>
-        <input id="beginDate" th:field="*{dateAndTimeFrom}" type="datetime-local">
+        <input id="beginDate" required="required" th:field="*{dateAndTimeFrom}"
+               th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+               type="datetime-local">
 
+        <!-- ${#dates.format(date, #messages.msg('app.dateformat'))} -->
         <label for="endDate">To:</label>
-        <input id="endDate" th:field="*{dateAndTimeTo}" type="datetime-local">
+        <input id="endDate" required="required" th:field="*{dateAndTimeTo}"
+               th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+               type="datetime-local">
 
         <br/>
         <br/>
@@ -30,11 +35,11 @@
 
         <input type="submit">
 
-        <div th:if="${#fields.hasGlobalErrors()}">
+        <div style="color: red" th:if="${#fields.hasGlobalErrors()}">
             <p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p>
         </div>
 
-        <div th:if="${#fields.hasErrors()}">
+        <div style="color: red" th:if="${#fields.hasErrors()}">
             <pre><p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p></pre>
         </div>
     </div>

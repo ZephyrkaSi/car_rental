@@ -39,10 +39,6 @@ public class OrderServiceImpl implements OrderService {
         var order = modelMapper.map(orderDTO, Order.class);
 
         var carModel = order.getCarModel();
-        /*//TODO REMOVE THIS WHEN CAR MODEL FORM ADDED
-        carModel = carModelRepository.findById(1L).get();
-        //TODO REMOVE THIS WHEN CAR MODEL FORM ADDED
-        order.setCarModel(carModel);*/
         var dateAndTimeFrom = order.getDateAndTimeFrom();
         var dateAndTimeTo = order.getDateAndTimeTo();
 
