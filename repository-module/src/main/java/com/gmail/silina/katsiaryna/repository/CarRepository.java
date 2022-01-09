@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.gmail.silina.katsiaryna.repository.constant.SqlConstant.CAR_STATUS_BROKEN;
+import static com.gmail.silina.katsiaryna.repository.constant.SqlConstant.ORDER_DECLINED_STATUSES;
+
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
     @Query("SELECT c FROM Car c WHERE c.carStatus = :status")
@@ -17,11 +20,14 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     @Query(value = "SELECT * FROM CAR C " +
             "WHERE C.CAR_MODEL_ID = :modelId " +
-            "  AND C.CAR_STATUS_ID != (SELECT CS.ID FROM CAR_STATUS CS WHERE CS.STATUS = 'BROKEN')  " +
-            "  AND NOT EXISTS (SELECT NULL FROM ORDER O " +
+            "  AND C.CAR_STATUS_ID != (SELECT CS.ID FROM CAR_STATUS CS WHERE CS.STATUS = " + CAR_STATUS_BROKEN + ")  " +
+            "  AND NOT EXISTS (SELECT NULL FROM `ORDER` O " +
             //отсекаем ордеры завершенные до текущ момента (до даты-времени оформления нашего заказа)
-            "                  WHERE SYSDATE() < DATE_TO " +
-            "                    AND C.ID = O.CAR_ID" +
+            "                  WHERE SYSDATE() < O.DATE_TO " +
+            "                    AND C.ID = O.CAR_ID " +
+            "                    AND O.ORDER_STATUS_ID NOT IN (SELECT OS.ID " +
+            "                                                  FROM ORDER_STATUS OS " +
+            "                                                  WHERE OS.STATUS IN (" + ORDER_DECLINED_STATUSES + ")) " +
             "                    AND (" +
             "                        (:end BETWEEN DATE_FROM AND DATE_TO)" +
             "                        OR" +

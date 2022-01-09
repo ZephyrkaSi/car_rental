@@ -6,8 +6,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -18,7 +19,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,4 +47,13 @@ public class User implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private UserDetails userDetails;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<Order> orders = new HashSet<>();
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<RepairInvoice> clientRepairInvoices = new HashSet<>();
+    @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<RepairInvoice> adminRepairInvoices = new HashSet<>();
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"/>
+
+<h1>Order</h1>
+
+<form th:action="@{/orders/form}" th:method="POST">
+    <div th:object="${order}">
+        <label for="beginDate">From:</label>
+        <input id="beginDate" th:field="*{dateAndTimeFrom}" type="datetime-local">
+
+        <label for="endDate">To:</label>
+        <input id="endDate" th:field="*{dateAndTimeTo}" type="datetime-local">
+
+        <br/>
+        <br/>
+
+        <label for="carModel">Car model:</label>
+        <select id="carModel" required="required" th:field="*{carModel}">
+            <option value="">Choose car model</option>
+            <option th:each="model : ${carModels}"
+                    th:text="${model.getBrandName()} + ' ' + ${model.getModel()}"
+                    th:value="${model.id}"></option>
+        </select>
+
+        <br/>
+        <br/>
+
+        <input type="submit">
+
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p>
+        </div>
+
+        <div th:if="${#fields.hasErrors()}">
+            <pre><p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p></pre>
+        </div>
+    </div>
+</form>
+
+
+<p><strong>Note:</strong> type="datetime-local" is not supported in Internet Explorer 11 or prior Safari 14.1.</p>
+
+</body>
+</html>

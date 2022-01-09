@@ -46,23 +46,6 @@ public class UserServiceImpl implements UserService {
         return new PageImpl<>(users.getContent().stream().map(el -> modelMapper.map(el, UserDTO.class)).collect(Collectors.toList()), pageable, users.getTotalElements());
     }
 
-    /* @Override
-        public PageDTO<UserDTO> getAllByPagination(int pageNumber, int pageSize) {
-            PageDTO<UserDTO> page = new PageDTO<>();
-
-            List<User> users = userRepository.findAll(pageNumber, pageSize);
-            List<UserDTO> userDTOs = users.stream().map(user -> modelMapper.map(user, UserDTO.class))
-                    .collect(Collectors.toList());
-            page.getObjects().addAll(userDTOs);
-
-            var numberOfUsers = userRepository.getCount();
-            var numbersOfPages = IntStream.rangeClosed(1, ServiceUtil.getNumbersOfPages(pageSize, numberOfUsers))
-                    .boxed()
-                    .collect(Collectors.toList());
-            page.getNumbersOfPage().addAll(numbersOfPages);
-            return page;
-        }
-    */
     @Override
     public void addClient(UserDTO userDTO, Long roleId) {
 

@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Success registration</title>
+</head>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"/>
+
+<h2>Success registration!</h2>
+
+</br>
+
+<p>Hello <span th:utext="${order.getCarModel()}"/> has been ordered. Give us your money please </p>
+
+</body>
+
+</html>

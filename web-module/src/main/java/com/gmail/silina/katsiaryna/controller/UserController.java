@@ -6,7 +6,6 @@ import com.gmail.silina.katsiaryna.service.UserDetailsService;
 import com.gmail.silina.katsiaryna.service.UserService;
 import com.gmail.silina.katsiaryna.service.model.UserDTO;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,18 +17,17 @@ import static com.gmail.silina.katsiaryna.constant.HandlerConstants.USERS_URL;
 
 @Controller
 @RequestMapping(USERS_URL)
-@Slf4j
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
 
-    @GetMapping
+    @GetMapping("/all")
     public String getAllUsers() {
         return "users";
     }
 
-    @GetMapping("/api/users")
+    @GetMapping("/api/all")
     @ResponseBody
     public Page<UserDTO> getAllUsers(@RequestParam(value = "page", required = false/*, defaultValue = "0"*/) Integer page,
                                      @RequestParam(value = "limit", required = false/*, defaultValue = "10"*/) Integer limit) {
@@ -53,7 +51,7 @@ public class UserController {
             userDetailsService.add(userDetails);
             user.setUserDetails(userDetails);
             userService.addClient(user);
-            return "success_registration";
+            return "user_success_registration";
         }
     }
 

@@ -36,8 +36,9 @@ public class UserDetails {
     private String passportData;
     @Column(name = "TOTAL_RENTAL_TIME")
     private Integer totalRentalTime = 0;
-    @Column(name = "DISCOUNT_STATUS_ID")
-    private Integer discountStatusId = 1;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DISCOUNT_STATUS_ID")
+    private DiscountStatus discountStatus;
     @OneToOne(mappedBy = "userDetails", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     @ToString.Exclude
     private User user;
