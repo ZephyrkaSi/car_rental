@@ -9,5 +9,5 @@ public class UserDetailsDTO {
     private String lastName;
     private String passportData;
     private Integer totalRentalTime = 0;
-    private Integer statusId = 1;
+    private DiscountStatusDTO status;
 }

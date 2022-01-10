@@ -14,17 +14,11 @@ public interface UserService {
 
     Page<UserDTO> getAllByPage(int page, int limit);
 
-    void addClient(UserDTO userDTO, Long roleId);
-
     void removeById(Long id);
 
     void changePasswordById(Long id);
 
     void changeRoleById(Long idUser, Long idRole);
-
-    void addAndSendEmail(UserDTO user, Long idRole);
-
-    void addAndSendEmail(UserDTO user);
 
     void addClient(User user);
 }

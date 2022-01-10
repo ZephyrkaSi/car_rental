@@ -1,20 +1,54 @@
-<div align='center'><h1>Orders with Angular</h1></div>
+<div align='center'><h1>All Orders</h1></div>
 
-<div>
-  <table class="table" style="width: 80%">
-    <tr>
-      <th>Id</th>
-      <th>Order date</th>
-      <th></th>
-    </tr>
-    <tr *ngFor="let order of orders">
-      <td>
-        {{order.id}}
-      </td>
-      <td>
-        {{order.orderDate}}
-      </td>
-    </tr>
-  </table>
-</div>
+<nav class="navbar">
+  <!--<input (ngModelChange)="Search()" [(ngModel)]="id" class="form-control"
+         name="firstName" placeholder="Enter order id to search" type="search">-->
+</nav>
+<table class="table" style="width: 80%">
+  <thead>
+  <tr>
+    <!--
+        <th (click)="sort('id')">№&nbsp;<i class="fa fa-sort"></i></th>
+    -->
+    <th>Order date</th>
+    <th>Client</th>
+    <th>Date from</th>
+    <th>Date to</th>
+    <th>Car</th>
+    <th>Price</th>
+    <th>Discount</th>
+    <th>Decline reason</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let order of orders">
+    <td>
+      {{order.id}}
+    </td>
+    <td>
+      {{order.orderDate}}
+    </td>
+    <td>
+      {{order.user.id}},
+      {{order.user.userDetails.firstName}}
+      {{order.user.userDetails.lastName}},
+      {{order.user.email}}
+    </td>
+    <td>
+      {{order.dateAndTimeFrom}}
+    </td>
+    <td>
+      {{order.dateAndTimeTo}}
+    </td>
+    <td>{{order.car.carModel.brandName}} {{order.car.carModel.model}}, {{order.car.stateNumber}}</td>
+    <td>{{order.priceWithDiscount}}</td>
+    <td>{{order.discount}}</td>
+    <td>{{order.declineReason}}</td>
+    <td>{{order.orderStatus.orderStatus}}</td>
+  </tr>
+  </tbody>
+</table>
+<!--
 <router-outlet></router-outlet>
+-->

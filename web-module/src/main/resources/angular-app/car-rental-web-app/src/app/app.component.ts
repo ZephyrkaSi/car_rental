@@ -1,29 +1,31 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {OrderService} from './order/order-service.service';
 import {Router} from "@angular/router";
-import {Order} from "./order/order";
+import {order} from "./order/order";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Orders';
-  orders: Order[] | undefined;
+  orders: order[] | undefined;
+  id: any;
+  key: string = 'id';
+  reverse: boolean = false;
+
+  //dataSource: OrderTableDataSource;
 
   constructor(private router: Router, private orderService: OrderService) {
+    /*
+        this.dataSource = new OrderTableDataSource();
+    */
   }
 
   getOrders() {
     this.orderService.getOrders().subscribe(data => {
       this.orders = data;
-    });
-  }
-
-  ngOnInit(): void {
-    this.router.events.subscribe(value => {
-      this.getOrders();
     });
   }
 }

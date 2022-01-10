@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Order} from "./order";
+import {order} from "./order";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,6 @@ export class OrderService {
   }
 
   getOrders() {
-    return this.http.get<Order[]>(`${this.url}`);
+    return this.http.get<order[]>(`${this.url}`);
   }
 }

@@ -13,4 +13,5 @@ public class UserDTO {
     private String role;
     private boolean enabled;
     private Date lastLogin;
+    private UserDetailsDTO userDetails;
 }

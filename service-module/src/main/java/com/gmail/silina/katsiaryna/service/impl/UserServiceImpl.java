@@ -1,7 +1,6 @@
 package com.gmail.silina.katsiaryna.service.impl;
 
 import com.gmail.silina.katsiaryna.repository.RoleRepository;
-import com.gmail.silina.katsiaryna.repository.UserDetailsRepository;
 import com.gmail.silina.katsiaryna.repository.UserRepository;
 import com.gmail.silina.katsiaryna.repository.model.Role;
 import com.gmail.silina.katsiaryna.repository.model.RoleEnum;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private UserRepository userRepository;
-    private UserDetailsRepository userDetailsRepository;
     private ModelMapper modelMapper;
 
     @Override
@@ -45,16 +43,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addClient(UserDTO userDTO, Long roleId) {
-
-    }
-
-    @Override
     public void removeById(Long id) {
-        var user = userRepository.findById(id);
-        if (user != null) {
-            //userRepository.remove(user);
-        } else {
+        try {
+            userRepository.deleteById(id);
+        } catch (ServiceException e) {
             //TODO Why is't here catch section ?
             throw new ServiceException(String.format("User with id %s doesn't exist", id));
         }
@@ -62,21 +54,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changePasswordById(Long id) {
-
+        
     }
 
     @Override
     public void changeRoleById(Long idUser, Long idRole) {
-
-    }
-
-    @Override
-    public void addAndSendEmail(UserDTO user, Long idRole) {
-
-    }
-
-    @Override
-    public void addAndSendEmail(UserDTO user) {
 
     }
 
