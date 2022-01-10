@@ -4,7 +4,7 @@ import com.gmail.silina.katsiaryna.repository.model.User;
 import com.gmail.silina.katsiaryna.repository.model.UserDetails;
 import com.gmail.silina.katsiaryna.service.UserDetailsService;
 import com.gmail.silina.katsiaryna.service.UserService;
-import com.gmail.silina.katsiaryna.service.model.UserDTO;
+import com.gmail.silina.katsiaryna.service.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,7 @@
 package com.gmail.silina.katsiaryna.service;
 
 import com.gmail.silina.katsiaryna.repository.model.User;
-import com.gmail.silina.katsiaryna.service.model.UserDTO;
+import com.gmail.silina.katsiaryna.service.dto.UserDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

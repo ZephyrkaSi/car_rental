@@ -11,7 +11,7 @@ public class MainController {
 
     @GetMapping
     public String welcomePage(Model model) {
-        model.addAttribute("title", "Welcome");
+        model.addAttribute("title", "Car rental");
         model.addAttribute("message", "This is welcome page!");
         return "home";
     }

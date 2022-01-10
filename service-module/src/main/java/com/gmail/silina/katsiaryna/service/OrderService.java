@@ -1,7 +1,12 @@
 package com.gmail.silina.katsiaryna.service;
 
-import com.gmail.silina.katsiaryna.service.model.OrderDTO;
+import com.gmail.silina.katsiaryna.service.dto.OrderDTO;
+import com.gmail.silina.katsiaryna.service.dto.OrderFormDTO;
+
+import java.util.List;
 
 public interface OrderService {
-    void addOrder(OrderDTO orderDTO);
+    List<OrderDTO> getAllOrders();
+
+    void addOrder(OrderFormDTO orderFormDTO);
 }

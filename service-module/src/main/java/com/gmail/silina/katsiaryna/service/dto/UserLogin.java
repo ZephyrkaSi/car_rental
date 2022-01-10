@@ -1,4 +1,4 @@
-package com.gmail.silina.katsiaryna.service.model;
+package com.gmail.silina.katsiaryna.service.dto;
 
 import com.gmail.silina.katsiaryna.repository.model.Role;
 import com.gmail.silina.katsiaryna.repository.model.User;

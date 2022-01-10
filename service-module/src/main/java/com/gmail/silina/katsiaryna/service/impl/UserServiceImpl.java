@@ -7,8 +7,8 @@ import com.gmail.silina.katsiaryna.repository.model.Role;
 import com.gmail.silina.katsiaryna.repository.model.RoleEnum;
 import com.gmail.silina.katsiaryna.repository.model.User;
 import com.gmail.silina.katsiaryna.service.UserService;
+import com.gmail.silina.katsiaryna.service.dto.UserDTO;
 import com.gmail.silina.katsiaryna.service.exception.ServiceException;
-import com.gmail.silina.katsiaryna.service.model.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -28,8 +28,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private UserDetailsRepository userDetailsRepository;
     private ModelMapper modelMapper;
-    //private final MailSender mailSender;
-    //private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDTO> getAll() {

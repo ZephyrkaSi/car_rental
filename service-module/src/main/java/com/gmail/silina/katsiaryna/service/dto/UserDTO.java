@@ -1,4 +1,4 @@
-package com.gmail.silina.katsiaryna.service.model;
+package com.gmail.silina.katsiaryna.service.dto;
 
 import lombok.Data;
 

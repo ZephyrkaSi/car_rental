@@ -1,4 +1,4 @@
-package com.gmail.silina.katsiaryna.service.model;
+package com.gmail.silina.katsiaryna.service.dto;
 
 import com.gmail.silina.katsiaryna.repository.model.CarModel;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Validated
-public class OrderDTO {
+public class OrderFormDTO {
     @NotNull(message = "Date should not be valid")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateAndTimeFrom;

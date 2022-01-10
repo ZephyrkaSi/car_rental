@@ -2,7 +2,7 @@ package com.gmail.silina.katsiaryna.service.impl;
 
 import com.gmail.silina.katsiaryna.repository.RoleRepository;
 import com.gmail.silina.katsiaryna.service.RoleService;
-import com.gmail.silina.katsiaryna.service.model.RoleDTO;
+import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

@@ -7,8 +7,9 @@ import com.gmail.silina.katsiaryna.repository.model.*;
 import com.gmail.silina.katsiaryna.service.CarService;
 import com.gmail.silina.katsiaryna.service.OrderService;
 import com.gmail.silina.katsiaryna.service.OrderStatusService;
+import com.gmail.silina.katsiaryna.service.dto.OrderDTO;
+import com.gmail.silina.katsiaryna.service.dto.OrderFormDTO;
 import com.gmail.silina.katsiaryna.service.exception.OrderException;
-import com.gmail.silina.katsiaryna.service.model.OrderDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.gmail.silina.katsiaryna.service.constant.ServiceConstant.MAX_DISCOUNT;
 
@@ -33,10 +36,18 @@ public class OrderServiceImpl implements OrderService {
     private final ModelMapper modelMapper;
 
     @Override
-    public void addOrder(OrderDTO orderDTO) {
+    public List<OrderDTO> getAllOrders() {
+        var orders = orderRepository.findAll();
+        return orders.stream()
+                .map(order -> modelMapper.map(order, OrderDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addOrder(OrderFormDTO orderFormDTO) {
         //TODO ADD LOGS
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        var order = modelMapper.map(orderDTO, Order.class);
+        var order = modelMapper.map(orderFormDTO, Order.class);
 
         var carModel = order.getCarModel();
         var dateAndTimeFrom = order.getDateAndTimeFrom();

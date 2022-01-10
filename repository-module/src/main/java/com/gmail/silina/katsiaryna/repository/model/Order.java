@@ -70,9 +70,7 @@ public class Order {
         if (!Objects.equals(priceWithDiscount, order.priceWithDiscount))
             return false;
         if (!Objects.equals(discount, order.discount)) return false;
-        if (!Objects.equals(declineReason, order.declineReason))
-            return false;
-        return Objects.equals(orderStatus, order.orderStatus);
+        return Objects.equals(declineReason, order.declineReason);
     }
 
     @Override
@@ -87,7 +85,6 @@ public class Order {
         result = 31 * result + (priceWithDiscount != null ? priceWithDiscount.hashCode() : 0);
         result = 31 * result + (discount != null ? discount.hashCode() : 0);
         result = 31 * result + (declineReason != null ? declineReason.hashCode() : 0);
-        result = 31 * result + (orderStatus != null ? orderStatus.hashCode() : 0);
         return result;
     }
 }

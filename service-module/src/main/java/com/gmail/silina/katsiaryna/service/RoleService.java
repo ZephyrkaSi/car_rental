@@ -1,6 +1,6 @@
 package com.gmail.silina.katsiaryna.service;
 
-import com.gmail.silina.katsiaryna.service.model.RoleDTO;
+import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
 
 import java.util.List;
 

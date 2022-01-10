@@ -1,0 +1,20 @@
+<div align='center'><h1>Orders with Angular</h1></div>
+
+<div>
+  <table class="table" style="width: 80%">
+    <tr>
+      <th>Id</th>
+      <th>Order date</th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let order of orders">
+      <td>
+        {{order.id}}
+      </td>
+      <td>
+        {{order.orderDate}}
+      </td>
+    </tr>
+  </table>
+</div>
+<router-outlet></router-outlet>

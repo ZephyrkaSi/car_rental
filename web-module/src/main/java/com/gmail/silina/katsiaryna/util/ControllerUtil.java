@@ -1,7 +1,7 @@
 package com.gmail.silina.katsiaryna.util;
 
 import com.gmail.silina.katsiaryna.repository.model.RoleEnum;
-import com.gmail.silina.katsiaryna.service.model.UserLogin;
+import com.gmail.silina.katsiaryna.service.dto.UserLogin;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

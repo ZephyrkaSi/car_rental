@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-table.min.css}">
+    <meta charset="UTF-8" content="text/html" http-equiv="Content-Type">
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap-table.min.js}"></script>
+
+    <title>Orders</title>
+</head>
+<body>
+
+<table
+        data-height="460"
+        data-smart-display="false"
+        data-toggle="table"
+        data-url="/orders/api/all"
+        id="table"
+>
+    <thead>
+    <tr>
+        <th data-field="id">ID</th>
+        <th data-field="orderDate">Order date</th>
+    </tr>
+    </thead>
+</table>
+<!--
+
+<div class="container">
+    <div th:if="${not #lists.isEmpty(orders)}">
+        <h2>Order list</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th></th>
+
+            </tr>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+-->
+
+</body>
+</html>
