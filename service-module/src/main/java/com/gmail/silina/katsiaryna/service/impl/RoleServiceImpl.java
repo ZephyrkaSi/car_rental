@@ -1,6 +1,7 @@
 package com.gmail.silina.katsiaryna.service.impl;
 
 import com.gmail.silina.katsiaryna.repository.RoleRepository;
+import com.gmail.silina.katsiaryna.repository.model.Role;
 import com.gmail.silina.katsiaryna.service.RoleService;
 import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
 import lombok.AllArgsConstructor;
@@ -21,5 +22,10 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.findAll().stream()
                 .map(role -> modelMapper.map(role, RoleDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Role getByName(String name) {
+        return null;
     }
 }

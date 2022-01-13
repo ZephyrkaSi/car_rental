@@ -1,15 +1,9 @@
 package com.gmail.silina.katsiaryna.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
-
-@Service
-@RequiredArgsConstructor
+/*@Service
+@RequiredArgsConstructor*/
 public class MailSender {
-    private final JavaMailSender mailSender;
+/*    private final JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String username;
@@ -20,5 +14,5 @@ public class MailSender {
         mailMessage.setTo(emailTo);
         mailMessage.setText(message);
         mailSender.send(mailMessage);
-    }
+    }*/
 }

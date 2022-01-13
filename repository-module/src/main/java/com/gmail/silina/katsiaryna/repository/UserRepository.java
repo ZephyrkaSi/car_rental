@@ -3,10 +3,13 @@ package com.gmail.silina.katsiaryna.repository;
 import com.gmail.silina.katsiaryna.repository.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>/*GenericRepository<Long, User>*/ {
-  /*  User getUserByEmail(String username);
-
-    List<User> findAll(int pageNumber, int pageSize);*/
+@Transactional(readOnly = true)
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String login);
 }

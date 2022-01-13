@@ -15,4 +15,9 @@ public class MainController {
         model.addAttribute("message", "This is welcome page!");
         return "home";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }

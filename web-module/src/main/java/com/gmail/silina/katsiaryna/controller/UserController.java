@@ -11,16 +11,33 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Base64;
 
 import static com.gmail.silina.katsiaryna.constant.HandlerConstants.USERS_URL;
 
 @Controller
+@CrossOrigin
 @RequestMapping(USERS_URL)
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
+
+    @PostMapping("/login")
+    @ResponseBody
+    public boolean login(@RequestBody User user) {
+        return user.getUsername().equals("user") && user.getPassword().equals("password");
+    }
+
+    @RequestMapping("/user")
+    public Principal user(HttpServletRequest request) {
+        String authToken = request.getHeader("Authorization").substring("Basic".length()).trim();
+        return () -> new String(Base64.getDecoder().decode(authToken)).split(":")[0];
+    }
+
 
     @GetMapping("/all")
     public String getAllUsers() {

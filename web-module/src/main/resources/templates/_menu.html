@@ -1,5 +1,5 @@
 <div style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;"
-     xmlns:th="http://www.thymeleaf.org">
+     xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <a th:href="@{/}">Home</a>
 
@@ -9,12 +9,10 @@
 
     | &nbsp;
 
-    <a th:href="@{/login}">Login</a>
-
-    | &nbsp;
-
-    <!--
-        <a th:href="@{/logout}" th:if="${#request.userPrincipal != null}">Logout</a>
-    -->
-
+    <a sec:authorize="isAuthenticated()">
+        <a th:href="@{/logout}">Logout</a>
+    </a>
+    <a sec:authorize="!isAuthenticated()">
+        <a th:href="@{/login}">Login</a>
+    </a>
 </div>

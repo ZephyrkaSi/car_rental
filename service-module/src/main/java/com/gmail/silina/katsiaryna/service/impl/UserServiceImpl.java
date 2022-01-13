@@ -14,18 +14,25 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gmail.silina.katsiaryna.service.constant.ServiceConstant.USER_NOT_FOUND_MSG;
+
 @Service
 @Slf4j
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleRepository roleRepository;
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDTO> getAll() {
@@ -54,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changePasswordById(Long id) {
-        
+
     }
 
     @Override
@@ -64,8 +71,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addClient(User user) {
+        if (userRepository.findByUsername(user.getEmail()).isPresent()) {
+            throw new ServiceException("There is user with that email address:" + user.getEmail());
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //TODO use roleService
         Role clientRole = roleRepository.findByName(RoleEnum.CLIENT);
         user.setRole(clientRole);
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, username)));
     }
 }
