@@ -2,7 +2,7 @@ package com.gmail.silina.katsiaryna.service.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class UserDTO {
@@ -10,8 +10,8 @@ public class UserDTO {
     private String username;
     private String password;
     private String email;
-    private String role;
+    private RoleDTO role;
     private boolean enabled;
-    private Date lastLogin;
+    private LocalDateTime lastLogin;
     private UserDetailsDTO userDetails;
 }

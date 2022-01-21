@@ -5,23 +5,24 @@ import com.gmail.silina.katsiaryna.repository.UserRepository;
 import com.gmail.silina.katsiaryna.repository.model.Role;
 import com.gmail.silina.katsiaryna.repository.model.RoleEnum;
 import com.gmail.silina.katsiaryna.repository.model.User;
+import com.gmail.silina.katsiaryna.service.ConvertService;
+import com.gmail.silina.katsiaryna.service.RoleService;
 import com.gmail.silina.katsiaryna.service.UserService;
+import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
 import com.gmail.silina.katsiaryna.service.dto.UserDTO;
 import com.gmail.silina.katsiaryna.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.gmail.silina.katsiaryna.service.constant.ServiceConstant.USER_NOT_FOUND_MSG;
 
@@ -29,44 +30,88 @@ import static com.gmail.silina.katsiaryna.service.constant.ServiceConstant.USER_
 @Slf4j
 @AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
+    private final RoleService roleService;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ConvertService convertService;
 
     @Override
-    public List<UserDTO> getAll() {
+    public Long getPrincipalUserId() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return user.getId();
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        var optionalOrder = userRepository.findById(id);
+        return optionalOrder.orElse(null);
+    }
+
+    @Override
+    public UserDTO getUserDTOById(Long id) {
+        var user = getUserById(id);
+        return convertService.getDTOFromObject(user, UserDTO.class);
+    }
+
+    @Override
+    public List<UserDTO> getAllUserDTOs() {
         var users = userRepository.findAll();
-        return users.stream()
-                .map(user -> modelMapper.map(user, UserDTO.class))
-                .collect(Collectors.toList());
+        return convertService.getDTOsFromObjectList(users, UserDTO.class);
     }
 
     @Override
-    public Page<UserDTO> getAllByPage(int page, int limit) {
-        var pageable = PageRequest.of(page, limit);
-        var users = userRepository.findAll(pageable);
-        return new PageImpl<>(users.getContent().stream().map(el -> modelMapper.map(el, UserDTO.class)).collect(Collectors.toList()), pageable, users.getTotalElements());
+    public List<UserDTO> getAllUserDTOsByRoleName(RoleEnum roleName) {
+        var users = userRepository.findAllByRoleName(roleName);
+        return convertService.getDTOsFromObjectList(users, UserDTO.class);
     }
 
     @Override
-    public void removeById(Long id) {
+    public void changeUserPasswordFrom(UserDTO userDTO) {
+        var userId = userDTO.getId();
+        var user = getUserById(userId);
+
+        var password = userDTO.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changeUserRoleById(Long userId, RoleDTO roleDTO) {
+        var user = getUserById(userId);
+        var role = convertService.getObjectFromDTO(roleDTO, Role.class);
+        user.setRole(role);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changeUserEnabledStatus(Long userId, boolean enabled) {
+        var user = getUserById(userId);
+        user.setEnabled(enabled);
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserRoleAndEnabledStatusFrom(UserDTO userDTO) {
+        var userId = userDTO.getId();
+        var roleDTO = userDTO.getRole();
+        var enabled = userDTO.isEnabled();
+
+        changeUserRoleById(userId, roleDTO);
+        changeUserEnabledStatus(userId, enabled);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        //TODO log
         try {
             userRepository.deleteById(id);
+            log.info("");
         } catch (ServiceException e) {
-            //TODO Why is't here catch section ?
             throw new ServiceException(String.format("User with id %s doesn't exist", id));
         }
-    }
-
-    @Override
-    public void changePasswordById(Long id) {
-
-    }
-
-    @Override
-    public void changeRoleById(Long idUser, Long idRole) {
-
     }
 
     @Override
@@ -78,6 +123,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         //TODO use roleService
         Role clientRole = roleRepository.findByName(RoleEnum.CLIENT);
         user.setRole(clientRole);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changeLastLogin(Long userId) {
+        var user = getUserById(userId);
+        user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);
     }
 

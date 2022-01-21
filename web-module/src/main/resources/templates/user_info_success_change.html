@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <title>Success registration</title>
+</head>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"/>
+
+<h2>User info has been changed successfully!</h2>
+
+<a th:href="@{/users/userInfo}"><< Back to User Info</a>
+
+</body>
+
+</html>

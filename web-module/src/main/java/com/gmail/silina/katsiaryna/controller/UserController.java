@@ -2,53 +2,55 @@ package com.gmail.silina.katsiaryna.controller;
 
 import com.gmail.silina.katsiaryna.repository.model.User;
 import com.gmail.silina.katsiaryna.repository.model.UserDetails;
+import com.gmail.silina.katsiaryna.service.OrderService;
+import com.gmail.silina.katsiaryna.service.RoleService;
 import com.gmail.silina.katsiaryna.service.UserDetailsService;
 import com.gmail.silina.katsiaryna.service.UserService;
 import com.gmail.silina.katsiaryna.service.dto.UserDTO;
+import com.gmail.silina.katsiaryna.service.dto.UserDetailsDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
-import java.util.Base64;
 
 import static com.gmail.silina.katsiaryna.constant.HandlerConstants.USERS_URL;
 
 @Controller
-@CrossOrigin
 @RequestMapping(USERS_URL)
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
+    private final RoleService roleService;
+    private final OrderService orderService;
 
-    @PostMapping("/login")
-    @ResponseBody
-    public boolean login(@RequestBody User user) {
-        return user.getUsername().equals("user") && user.getPassword().equals("password");
+    @GetMapping
+    public String getAllOrders(Model model) {
+        model.addAttribute("users", userService.getAllUserDTOs());
+        return "users";
     }
 
+    @PostMapping("/updateUser")
+    public String saveUser(@ModelAttribute UserDTO userDTO) {
+        userService.updateUserRoleAndEnabledStatusFrom(userDTO);
+        return "redirect:/users";
+    }
+/*
     @RequestMapping("/user")
     public Principal user(HttpServletRequest request) {
         String authToken = request.getHeader("Authorization").substring("Basic".length()).trim();
         return () -> new String(Base64.getDecoder().decode(authToken)).split(":")[0];
-    }
+    }*/
 
-
-    @GetMapping("/all")
-    public String getAllUsers() {
-        return "users";
-    }
-
-    @GetMapping("/api/all")
-    @ResponseBody
-    public Page<UserDTO> getAllUsers(@RequestParam(value = "page", required = false/*, defaultValue = "0"*/) Integer page,
-                                     @RequestParam(value = "limit", required = false/*, defaultValue = "10"*/) Integer limit) {
-        return userService.getAllByPage(page, limit);
+    @GetMapping("/showUpdateForm")
+    public String showUpdateForm(@RequestParam Long userId, Model model) {
+        var userDTO = userService.getUserDTOById(userId);
+        model.addAttribute("user", userDTO);
+        model.addAttribute("userRoles", roleService.getAllRoleDTOs());
+        return "update_user_form";
     }
 
     @GetMapping("/add")
@@ -72,26 +74,74 @@ public class UserController {
         }
     }
 
-    @PostMapping("/delete")
-    public String deleteItems(@RequestParam(value = "selected", required = false) Long[] ids) {
-        if (ids != null) {
-            for (Long id : ids) {
-                userService.removeById(id);
-            }
+    @GetMapping("/userInfo")
+    public String showUserInfo(Model model) {
+        var userId = userService.getPrincipalUserId();
+        var userDTO = userService.getUserDTOById(userId);
+        model.addAttribute("user", userDTO);
+        return "user_info";
+    }
+
+    @GetMapping("/changeUserInfo")
+    public String changeUserInfo(@RequestParam Long userId, Model model) {
+        var userDetailsDTO = userDetailsService.getUserDetailsDTOById(userId);
+        model.addAttribute("userDetails", userDetailsDTO);
+        return "user_info_change_form";
+    }
+
+    @PostMapping("/saveChanges")
+    public String updateUserInfo(@RequestBody @ModelAttribute("userDetails") @Valid UserDetailsDTO userDetailsDTO,
+                                 BindingResult resultUserDetailsDTO) {
+        if (resultUserDetailsDTO.hasErrors()) {
+            return "user_info_change_form";
+        } else {
+            userDetailsService.changeUserDetailsFrom(userDetailsDTO);
+            return "user_info_success_change";
         }
-        return "redirect:" + USERS_URL;
     }
 
-    @PostMapping("/change-password")
-    public String changePassword(@RequestParam(value = "userIdForChangePass", required = false) Long id) {
-        userService.changePasswordById(id);
-        return "redirect:" + USERS_URL;
+    @GetMapping("/changePassword")
+    public String changeUserPassword(@RequestParam Long userId, Model model) {
+        var userDTO = userService.getUserDTOById(userId);
+        userDTO.setPassword("");
+        model.addAttribute("user", userDTO);
+        return "user_password_change_form";
     }
 
-    @PostMapping("/change-role")
-    public String changeRole(@RequestParam(value = "id") Long idUser,
-                             @RequestParam(value = "roleId") Long roleId) {
-        userService.changeRoleById(idUser, roleId);
-        return "redirect:" + USERS_URL;
+    @PostMapping("/saveNewPassword")
+    public String updateUserInfo(@RequestBody @ModelAttribute("user") @Valid UserDTO userDTO,
+                                 BindingResult resultUserDTO) {
+        if (resultUserDTO.hasErrors()) {
+            return "user_password_change_form";
+        } else {
+            userService.changeUserPasswordFrom(userDTO);
+            return "user_password_success_change";
+        }
+    }
+
+    @GetMapping("/delete")
+    public String deleteUser(@RequestParam Long userId) {
+        userService.deleteUserById(userId);
+        return "redirect:/logout";
+    }
+
+    @GetMapping("/userOrders")
+    public String showUserOrders(Model model) {
+        var userId = userService.getPrincipalUserId();
+        var orderDTOS = orderService.getUserOrdersDTOsByUserId(userId);
+        model.addAttribute("orders", orderDTOS);
+        return "user_orders";
+    }
+
+    @GetMapping("/myOrders/pay")
+    public String payForOrder(@RequestParam Long orderId) {
+        orderService.changeOrderStatusFromWaitingForPaymentToPaid(orderId);
+        return "redirect:/users/userOrders";
+    }
+
+    @GetMapping("/myOrders/decline")
+    public String declineOrder(@RequestParam Long orderId) {
+        orderService.changeOrderStatusFromWaitingForPaymentToCanceledByClient(orderId);
+        return "redirect:/users/userOrders";
     }
 }

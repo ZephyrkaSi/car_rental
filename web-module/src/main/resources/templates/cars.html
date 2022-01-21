@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>List Employees</title>
+    <title>Cars</title>
 
     <link href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css"
           rel="stylesheet"
@@ -19,38 +19,47 @@
 
 <div class="container">
 
-    <h3>users</h3>
+    <h3>Cars</h3>
 
     <!--<hr/>
     <a class="btn btn-primary" th:href="@{/addEmployeeForm}">Add Employee</a>
     --><br/><br/>
-    <table class="table table-busered table-striped" id="userTable">
+    <table class="table table-bordered table-striped" id="carTable">
 
         <thead>
         <tr>
             <th>Id</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Enabled</th>
-            <th>Last login</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>State number</th>
+            <th>Body type</th>
+            <th>Fuel type</th>
+            <th>Engine volume</th>
+            <th>Transmission</th>
+            <th>Body color</th>
+            <th>Interior color</th>
+            <th>Price per minute</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user: ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.username}"></td>
-            <td th:text="${user.email}"></td>
-            <td th:text="${user.role.roleName}"></td>
-            <td th:text="${user.userDetails.getFirstName()}"></td>
-            <td th:text="${user.userDetails.getLastName()}"></td>
-            <td th:text="${user.enabled}"></td>
-            <td th:text="${user.lastLogin}"></td>
+        <tr th:each="car: ${cars}">
+            <td th:text="${car.id}"></td>
+            <td th:text="${car.carModel.brandName}"></td>
+            <td th:text="${car.carModel.model}"></td>
+            <td th:text="${car.stateNumber}"></td>
+            <td th:text="${car.carModel.bodyType}"></td>
+            <td th:text="${car.carModel.fuelType}"></td>
+            <td th:text="${car.carModel.engineVolume}"></td>
+            <td th:text="${car.carModel.transmission}"></td>
+            <td th:text="${car.carModel.bodyColor}"></td>
+            <td th:text="${car.carModel.interiorColor}"></td>
+            <td th:text="${car.carModel.pricePerMinute}"></td>
+            <td th:text="${car.carStatus.carStatus}"></td>
+
             <td>
-                <a class="btn btn-info" th:href="@{/users/showUpdateForm(userId=${user.id})}">Update</a>
+                <a class="btn btn-info" th:href="@{/cars/changeCarStatusForm(carId=${car.id})}">Change status</a>
 
                 <!--
                                   <a class="btn btn-danger ml-2" th:href="@{/deleteEmployee(employeeId=${employee.id})}">Delete</a>
@@ -66,7 +75,7 @@
 <script src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
-        $("#userTable").DataTable({
+        $("#carTable").DataTable({
             'aoColumnDefs': [{
                 'bSortable': false,
                 'aTargets': [-1] /* 1st one, start by the right */

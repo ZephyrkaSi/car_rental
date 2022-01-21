@@ -13,7 +13,7 @@ import java.util.Set;
 public class OrderStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "STATUS")
     private OrderStatusEnum orderStatusEnum;
     @Column(name = "DESCRIPTION")

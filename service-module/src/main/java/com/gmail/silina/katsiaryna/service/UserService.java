@@ -1,24 +1,35 @@
 package com.gmail.silina.katsiaryna.service;
 
+import com.gmail.silina.katsiaryna.repository.model.RoleEnum;
 import com.gmail.silina.katsiaryna.repository.model.User;
+import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
 import com.gmail.silina.katsiaryna.service.dto.UserDTO;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface UserService {
 
-    //PageDTO<UserDTO> getAllByPagination(int pageNumber, int pageSize);
+    Long getPrincipalUserId();
 
-    List<UserDTO> getAll();
+    User getUserById(Long id);
 
-    Page<UserDTO> getAllByPage(int page, int limit);
+    UserDTO getUserDTOById(Long id);
 
-    void removeById(Long id);
+    List<UserDTO> getAllUserDTOs();
 
-    void changePasswordById(Long id);
+    List<UserDTO> getAllUserDTOsByRoleName(RoleEnum roleName);
 
-    void changeRoleById(Long idUser, Long idRole);
+    void changeUserRoleById(Long userId, RoleDTO roleDTO);
+
+    void changeUserEnabledStatus(Long userId, boolean enabled);
+
+    void updateUserRoleAndEnabledStatusFrom(UserDTO userDTO);
+
+    void deleteUserById(Long id);
+
+    void changeUserPasswordFrom(UserDTO userDTO);
 
     void addClient(User user);
+
+    void changeLastLogin(Long userId);
 }

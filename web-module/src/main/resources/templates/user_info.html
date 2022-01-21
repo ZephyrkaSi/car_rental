@@ -1,0 +1,46 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link crossorigin="anonymous"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          rel="stylesheet"/>
+
+    <title>User Info</title>
+
+</head>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"/>
+
+<div class="container">
+
+    <h3>User Info</h3>
+
+    <br/><br/>
+
+    <p>Discount status: <span th:utext="${user.userDetails.discountStatus.discountStatus}"/></p>
+    <p>Total rental time: <span th:utext="${user.userDetails.totalRentalTime}"/></p>
+
+    <br/>
+
+    <p>First name: <span th:utext="${user.userDetails.firstName}"/></p>
+    <p>Last name: <span th:utext="${user.userDetails.lastName}"/></p>
+    <p>Passport data: <span th:utext="${user.userDetails.passportData}"/></p>
+
+    <br/>
+
+    <p>Username: <span th:utext="${user.username}"/></p>
+    <p>Email: <span th:utext="${user.email}"/></p>
+
+
+    <a class="btn btn-info" th:href="@{/users/changeUserInfo(userId=${user.id})}">Change user info</a>
+    <a class="btn btn-info" th:href="@{/users/changePassword(userId=${user.id})}">Change password</a>
+    <a class="btn btn-danger ml-2" th:href="@{/users/delete(userId=${user.id})}">Delete account</a>
+
+</div>
+</body>
+
+</html>

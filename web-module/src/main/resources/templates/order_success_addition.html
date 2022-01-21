@@ -10,12 +10,14 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"/>
 
-<h2>Success registration!</h2>
+<h2>Your order has been registered!</h2>
 
 </br>
 
-<p>Hello <span th:utext="${order.getCarModel()}"/> has been ordered. Give us your money please </p>
-
+<p>Car <span th:utext="${order.carModel.brandName}"/> <span th:utext="${order.carModel.model}"/> has been added to your
+    orders.</p>
+<p>Check your order data and pay for the order or decline it following the link below.</p>
+<a th:href="@{/users/userOrders}">Go to my orders >></a>
 </body>
 
 </html>

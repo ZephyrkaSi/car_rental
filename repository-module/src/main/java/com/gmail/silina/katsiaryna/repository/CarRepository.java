@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.gmail.silina.katsiaryna.repository.constant.SqlConstant.CAR_STATUS_BROKEN;
+import static com.gmail.silina.katsiaryna.repository.constant.SqlConstant.CAR_STATUS_NOR_AVAILABLE_FOR_ORDER;
 import static com.gmail.silina.katsiaryna.repository.constant.SqlConstant.ORDER_DECLINED_STATUSES;
 
 @Repository
@@ -20,7 +20,7 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     @Query(value = "SELECT * FROM CAR C " +
             "WHERE C.CAR_MODEL_ID = :modelId " +
-            "  AND C.CAR_STATUS_ID != (SELECT CS.ID FROM CAR_STATUS CS WHERE CS.STATUS = " + CAR_STATUS_BROKEN + ")  " +
+            "  AND C.CAR_STATUS_ID NOT IN (SELECT CS.ID FROM CAR_STATUS CS WHERE CS.STATUS IN (" + CAR_STATUS_NOR_AVAILABLE_FOR_ORDER + "))" +
             "  AND NOT EXISTS (SELECT NULL FROM `ORDER` O " +
             //отсекаем ордеры завершенные до текущ момента (до даты-времени оформления нашего заказа)
             "                  WHERE SYSDATE() < O.DATE_TO " +

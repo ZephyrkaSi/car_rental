@@ -2,26 +2,36 @@ package com.gmail.silina.katsiaryna.service.impl;
 
 import com.gmail.silina.katsiaryna.repository.RoleRepository;
 import com.gmail.silina.katsiaryna.repository.model.Role;
+import com.gmail.silina.katsiaryna.service.ConvertService;
 import com.gmail.silina.katsiaryna.service.RoleService;
 import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    private RoleRepository roleRepository;
-    private ModelMapper modelMapper;
+    private final RoleRepository roleRepository;
+    private final ConvertService convertService;
 
     @Override
-    public List<RoleDTO> getAll() {
-        return roleRepository.findAll().stream()
-                .map(role -> modelMapper.map(role, RoleDTO.class))
-                .collect(Collectors.toList());
+    public Role getRoleById(Long id) {
+        var optionalRole = roleRepository.findById(id);
+        return optionalRole.orElse(null);
+    }
+
+    @Override
+    public RoleDTO getRoleDTOById(Long id) {
+        var role = getRoleById(id);
+        return convertService.getDTOFromObject(role, RoleDTO.class);
+    }
+
+    @Override
+    public List<RoleDTO> getAllRoleDTOs() {
+        var roles = roleRepository.findAll();
+        return convertService.getDTOsFromObjectList(roles, RoleDTO.class);
     }
 
     @Override

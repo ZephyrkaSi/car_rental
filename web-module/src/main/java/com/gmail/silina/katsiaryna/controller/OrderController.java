@@ -2,10 +2,12 @@ package com.gmail.silina.katsiaryna.controller;
 
 import com.gmail.silina.katsiaryna.service.CarModelService;
 import com.gmail.silina.katsiaryna.service.OrderService;
+import com.gmail.silina.katsiaryna.service.OrderStatusService;
 import com.gmail.silina.katsiaryna.service.dto.OrderDTO;
 import com.gmail.silina.katsiaryna.service.dto.OrderFormDTO;
 import com.gmail.silina.katsiaryna.service.exception.OrderException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,39 +15,40 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/orders")
 @AllArgsConstructor
 public class OrderController {
     private final OrderService orderService;
     private final CarModelService carModelService;
+    private final OrderStatusService orderStatusService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/api/all")
-    @ResponseBody
-    public List<OrderDTO> getAllOrdersApi() {
-        return orderService.getAllOrders();
-    }
-
-    @GetMapping("/all")
-    public String getAllOrders() {
-        return "orders";
-    }
-
-    @GetMapping("/angular")
-    @ResponseBody
-    public Iterable<OrderDTO> angular() {
-        return orderService.getAllOrders();
-    }
-
-/*    @RequestMapping
+    @GetMapping
     public String getAllOrders(Model model) {
-        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("orders", orderService.getAllOrderDTOs());
         return "orders";
-    }*/
+    }
 
+    @GetMapping("/addOrderForm")
+    public String addOrderForm(@ModelAttribute("order") OrderDTO orderDTO) {
+        return "update_order_form";
+    }
+
+    @PostMapping("/saveOrder")
+    public String saveOrder(@ModelAttribute OrderDTO orderDTO) {
+        orderService.updateOrderStatusAndDeclineReasonFrom(orderDTO);
+        return "redirect:/orders";
+    }
+
+    @GetMapping("/showUpdateForm")
+    public String showUpdateForm(@RequestParam Long orderId, Model model) {
+        var orderDTO = orderService.getOrderDTOById(orderId);
+        model.addAttribute("order", orderDTO);
+        model.addAttribute("orderStatuses", orderStatusService.getEligibleStatusesForOrder(orderDTO));
+        return "update_order_form";
+    }
 
     @GetMapping("/add")
     public String redirectToOrderForm(@ModelAttribute("order") OrderFormDTO orderFormDTO,
@@ -69,4 +72,22 @@ public class OrderController {
             return "order_success_addition";
         }
     }
+
+    /*@CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/api/orders")
+    public ResponseEntity<ErrorDTO> addOrder(@RequestBody @Valid OrderFormDTO orderFormDTO, BindingResult errors) {
+        if (!errors.hasErrors()) {
+            orderService.addOrder(orderFormDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            ErrorDTO error = new ErrorDTO();
+            var errorMessages = errors.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            error.getErrors().addAll(errorMessages);
+            log.error("Order filling error: {}", errors);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+    }*/
+
 }

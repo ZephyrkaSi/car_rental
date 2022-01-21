@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "REPAIR_INVOICE")
@@ -19,9 +19,9 @@ public class RepairInvoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "INVOICE_DATE")
-    private Date date;
+    private LocalDateTime date = LocalDateTime.now();
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "CLIENT_ID")
     @ToString.Exclude
     private User client;
     @ManyToOne(fetch = FetchType.LAZY)

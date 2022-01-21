@@ -19,37 +19,29 @@
 
 <div class="container">
 
-    <h3>Orders</h3>
+    <h3>My orders</h3>
 
-    <!--<hr/>
-    <a class="btn btn-primary" th:href="@{/addEmployeeForm}">Add Employee</a>
-    --><br/><br/>
+    <br/><br/>
     <table class="table table-bordered table-striped" id="orderTable">
 
         <thead>
         <tr>
             <th>Id</th>
             <th>Order date</th>
-            <th>Client's first name</th>
-            <th>Client's last name</th>
-            <th>Passport data</th>
             <th>Date and time from</th>
             <th>Date and time to</th>
             <th>Car brand</th>
             <th>Car model</th>
             <th>Car state number</th>
             <th>Order status</th>
-            <th>Decline reason</th>
+            <th>Admin's decline reason</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="order: ${orders}">
+        <tr th:each="order : ${orders}">
             <td th:text="${order.id}"></td>
             <td th:text="${#temporals.format(order.orderDate, 'HH/MM/YYYY hh:mm')}"></td>
-            <td th:text="${order.getUser().getUserDetails().getFirstName()}"></td>
-            <td th:text="${order.getUser().getUserDetails().getLastName()}"></td>
-            <td th:text="${order.getUser().getUserDetails().getPassportData()}"></td>
             <td th:text="${#temporals.format(order.dateAndTimeFrom, 'HH/MM/YYYY hh:mm')}"></td>
             <td th:text="${#temporals.format(order.dateAndTimeTo, 'HH/MM/YYYY hh:mm')}"></td>
             <td th:text="${order.carModel.getBrandName()}"></td>
@@ -57,19 +49,24 @@
             <td th:text="${order.car.getStateNumber()}"></td>
             <td th:text="${order.getOrderStatus().getOrderStatus()}"></td>
             <td th:text="${order.getDeclineReason()}"></td>
-            
+
             <td>
-                <a class="btn btn-info" th:href="@{/orders/showUpdateForm(orderId=${order.id})}"
-                   th:if="
-                   ${order.getOrderStatus().getOrderStatus()} != ${'DECLINED BY ADMIN'} and
-                   ${order.getOrderStatus().getOrderStatus()} != ${'CANCELED BY CLIENT'}">
-                    Update
+                <a class="btn btn-primary" th:href="@{/users/myOrders/pay(orderId=${order.id})}"
+                   th:if="${order.getOrderStatus().getOrderStatus()} == ${'WAITING FOR PAYMENT'}">
+                    Pay
+                </a>
+                <br/><br/>
+                <a class="btn btn-outline-danger" th:href="@{/users/myOrders/decline(orderId=${order.id})}"
+                   th:if="${order.getOrderStatus().getOrderStatus()} == ${'WAITING FOR PAYMENT'}">
+                    Decline order
                 </a>
 
-                <!--
-                                  <a class="btn btn-danger ml-2" th:href="@{/deleteEmployee(employeeId=${employee.id})}">Delete</a>
-                -->
             </td>
+
+            <!--<td>
+                <a class="btn btn-info" th:href="@{/users/myOrders/pay(orderId=${order.id})}"
+                   th:if="${order.getOrderStatus().getOrderStatus()} == ${'WAITING FOR PAYMENT'}">Pay</a>
+            </td>-->
         </tr>
         </tbody>
 
