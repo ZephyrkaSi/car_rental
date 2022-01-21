@@ -20,7 +20,5 @@ public interface CarService {
 
     List<Car> getAvailableCars(CarModel carModel, LocalDateTime begin, LocalDateTime end);
 
-    List<Car> getBrokenCars();
-
     void updateCarStatusFrom(CarDTO carDTO);
 }

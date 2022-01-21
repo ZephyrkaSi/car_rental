@@ -34,18 +34,6 @@ public class RepairInvoiceServiceImpl implements RepairInvoiceService {
         }
     }
 
-/*    @Override
-    public List<RepairInvoiceDTO> getAllRepairInvoiceDTOs() {
-        List<RepairInvoiceDTO> repairInvoicesDTO = new ArrayList<>();
-        try {
-            var repairInvoices = repairInvoiceRepository.findAll();
-            return convertService.getDTOsFromObjectList(repairInvoices, RepairInvoiceDTO.class);
-        } catch (RepositoryException e) {
-            log.error("Get list of RepairInvoiceDTO exception. {}", e.getMessage());
-            return repairInvoicesDTO;
-        }
-    }*/
-
     @Override
     public void addRepairInvoice(RepairInvoiceDTO repairInvoiceDTO) {
         var repairInvoice = convertService.getObjectFromDTO(repairInvoiceDTO, RepairInvoice.class);

@@ -23,19 +23,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDTO getRoleDTOById(Long id) {
-        var role = getRoleById(id);
-        return convertService.getDTOFromObject(role, RoleDTO.class);
-    }
-
-    @Override
     public List<RoleDTO> getAllRoleDTOs() {
         var roles = roleRepository.findAll();
         return convertService.getDTOsFromObjectList(roles, RoleDTO.class);
-    }
-
-    @Override
-    public Role getByName(String name) {
-        return null;
     }
 }

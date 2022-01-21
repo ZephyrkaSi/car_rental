@@ -7,6 +7,7 @@ import com.gmail.silina.katsiaryna.service.dto.OrderFormDTO;
 import java.util.List;
 
 public interface OrderService {
+
     Order getOrderById(Long id);
 
     OrderDTO getOrderDTOById(Long id);

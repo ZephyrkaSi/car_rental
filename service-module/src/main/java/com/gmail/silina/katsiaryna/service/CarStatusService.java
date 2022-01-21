@@ -7,6 +7,7 @@ import com.gmail.silina.katsiaryna.service.dto.CarStatusDTO;
 import java.util.List;
 
 public interface CarStatusService {
+    
     CarStatus getCarStatus(CarStatusEnum carStatusEnum);
 
     CarStatus getCarStatusById(Long id);

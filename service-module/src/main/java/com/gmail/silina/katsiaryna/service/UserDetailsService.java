@@ -12,5 +12,4 @@ public interface UserDetailsService {
     void add(UserDetails userDetails);
 
     void changeUserDetailsFrom(UserDetailsDTO userDetailsDTO);
-
 }
