@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/cars")
 @AllArgsConstructor
@@ -30,7 +32,7 @@ public class CarController {
     }
 
     @PostMapping("/changeCarStatus")
-    public String saveChangedCarStatus(@ModelAttribute CarDTO carDTO) {
+    public String saveChangedCarStatus(@ModelAttribute @Valid CarDTO carDTO) {
         carService.updateCarStatusFrom(carDTO);
         return "redirect:/cars";
     }

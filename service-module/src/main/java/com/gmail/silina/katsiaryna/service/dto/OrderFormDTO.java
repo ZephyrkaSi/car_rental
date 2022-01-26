@@ -1,21 +1,21 @@
 package com.gmail.silina.katsiaryna.service.dto;
 
 import com.gmail.silina.katsiaryna.repository.model.CarModel;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
 @Validated
 public class OrderFormDTO {
-    @NotNull(message = "Date should not be valid")
+    @NotNull(message = "Date and time should be valid")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateAndTimeFrom;
-    @NotNull(message = "Date should not be valid")
+    @NotNull(message = "Date and time should be valid")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime dateAndTimeTo;
     @NotNull

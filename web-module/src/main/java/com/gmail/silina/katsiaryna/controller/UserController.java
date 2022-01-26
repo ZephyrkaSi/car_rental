@@ -121,7 +121,12 @@ public class UserController {
 
     @GetMapping("/delete")
     public String deleteUser(@RequestParam Long userId) {
-        userService.deleteUserById(userId);
+        var user = userService.getUserById(userId);
+        if (user.getOrders().size() == 0) {
+            userService.deleteUserById(userId);
+        } else {
+            userService.changeUserEnabledStatus(userId, false);
+        }
         return "redirect:/logout";
     }
 

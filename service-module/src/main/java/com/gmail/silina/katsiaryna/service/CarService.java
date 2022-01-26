@@ -1,7 +1,6 @@
 package com.gmail.silina.katsiaryna.service;
 
 import com.gmail.silina.katsiaryna.repository.model.Car;
-import com.gmail.silina.katsiaryna.repository.model.CarModel;
 import com.gmail.silina.katsiaryna.service.dto.CarDTO;
 
 import java.time.LocalDateTime;
@@ -18,7 +17,7 @@ public interface CarService {
     List<CarDTO> getAllCarDTOs();
 
 
-    List<Car> getAvailableCars(CarModel carModel, LocalDateTime begin, LocalDateTime end);
+    List<Car> getAvailableCars(Long carModelId, LocalDateTime begin, LocalDateTime end);
 
     void updateCarStatusFrom(CarDTO carDTO);
 }

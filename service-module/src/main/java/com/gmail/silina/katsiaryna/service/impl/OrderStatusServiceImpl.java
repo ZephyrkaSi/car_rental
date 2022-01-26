@@ -7,7 +7,9 @@ import com.gmail.silina.katsiaryna.service.ConvertService;
 import com.gmail.silina.katsiaryna.service.OrderStatusService;
 import com.gmail.silina.katsiaryna.service.dto.OrderDTO;
 import com.gmail.silina.katsiaryna.service.dto.OrderStatusDTO;
+import com.gmail.silina.katsiaryna.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static com.gmail.silina.katsiaryna.repository.model.OrderStatusEnum.CONFIRMED;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class OrderStatusServiceImpl implements OrderStatusService {
@@ -23,8 +26,18 @@ public class OrderStatusServiceImpl implements OrderStatusService {
 
     @Override
     public OrderStatus getOrderStatusById(Long orderStatusId) {
-        var optionalOrderStatus = orderStatusRepository.findById(orderStatusId);
-        return optionalOrderStatus.orElse(null);
+        if (orderStatusId == null) {
+            log.error("Order status id cannot be null");
+            throw new ServiceException("Order status id cannot be null");
+        } else {
+            var optionalOrderStatus = orderStatusRepository.findById(orderStatusId);
+            if (optionalOrderStatus.isPresent()) {
+                return optionalOrderStatus.get();
+            } else {
+                log.error("Order status with id {} doesn't exist", orderStatusId);
+                throw new ServiceException("Order status with id " + orderStatusId + " doesn't exist");
+            }
+        }
     }
 
     @Override

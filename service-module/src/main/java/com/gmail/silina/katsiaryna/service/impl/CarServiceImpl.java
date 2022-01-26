@@ -2,17 +2,19 @@ package com.gmail.silina.katsiaryna.service.impl;
 
 import com.gmail.silina.katsiaryna.repository.CarRepository;
 import com.gmail.silina.katsiaryna.repository.model.Car;
-import com.gmail.silina.katsiaryna.repository.model.CarModel;
 import com.gmail.silina.katsiaryna.service.CarService;
 import com.gmail.silina.katsiaryna.service.CarStatusService;
 import com.gmail.silina.katsiaryna.service.ConvertService;
 import com.gmail.silina.katsiaryna.service.dto.CarDTO;
+import com.gmail.silina.katsiaryna.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CarServiceImpl implements CarService {
@@ -22,14 +24,34 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car getCarById(Long id) {
-        var optionalCar = carRepository.findById(id);
-        return optionalCar.orElse(null);
+        if (id == null) {
+            log.error("Car id cannot be null");
+            throw new ServiceException("Car id cannot be null");
+        } else {
+            var optionalCar = carRepository.findById(id);
+            if (optionalCar.isPresent()) {
+                return optionalCar.get();
+            } else {
+                log.error("Car with id {} doesn't exist", id);
+                throw new ServiceException("Car with id " + id + " doesn't exist");
+            }
+        }
     }
 
     @Override
     public CarDTO getCarDTOById(Long id) {
-        var car = getCarById(id);
-        return convertService.getDTOFromObject(car, CarDTO.class);
+        if (id == null) {
+            log.error("Car id cannot be null");
+            throw new ServiceException("Car id cannot be null");
+        } else {
+            var car = getCarById(id);
+            if (car == null) {
+                log.error("Car with id {} doesn't exist", id);
+                throw new ServiceException("Car with id " + id + " doesn't exist");
+            } else {
+                return convertService.getDTOFromObject(car, CarDTO.class);
+            }
+        }
     }
 
     @Override
@@ -44,8 +66,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> getAvailableCars(CarModel carModel, LocalDateTime begin, LocalDateTime end) {
-        return carRepository.findAvailableCars(carModel.getId(), begin, end);
+    public List<Car> getAvailableCars(Long carModelId, LocalDateTime begin, LocalDateTime end) {
+        return carRepository.findAvailableCars(carModelId, begin, end);
     }
 
     @Override
@@ -56,6 +78,7 @@ public class CarServiceImpl implements CarService {
         var carStatusId = carDTO.getCarStatus().getId();
         var carStatus = carStatusService.getCarStatusById(carStatusId);
         car.setCarStatus(carStatus);
+        log.info("Changing car status with id {}", carId);
         carRepository.save(car);
     }
 }

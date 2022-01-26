@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -25,13 +24,8 @@ public class RepairInvoiceServiceImpl implements RepairInvoiceService {
 
     @Override
     public List<RepairInvoiceDTO> getAllRepairInvoiceDTOs() {
-        List<RepairInvoiceDTO> repairInvoicesDTO = new ArrayList<>();
         var repairInvoices = repairInvoiceRepository.findAll();
-        if (repairInvoices.size() == 0) {
-            return repairInvoicesDTO;
-        } else {
-            return convertService.getDTOsFromObjectList(repairInvoices, RepairInvoiceDTO.class);
-        }
+        return convertService.getDTOsFromObjectList(repairInvoices, RepairInvoiceDTO.class);
     }
 
     @Override
@@ -45,8 +39,8 @@ public class RepairInvoiceServiceImpl implements RepairInvoiceService {
         var car = carService.getCarById(carId);
         repairInvoice.setCar(car);
 
-        //TODO admin!
-        var admin = userService.getUserById(24L);
+        var adminId = userService.getPrincipalUserId();
+        var admin = userService.getUserById(adminId);
         repairInvoice.setAdmin(admin);
 
         repairInvoiceRepository.save(repairInvoice);

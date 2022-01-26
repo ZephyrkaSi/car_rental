@@ -6,7 +6,6 @@ import com.gmail.silina.katsiaryna.repository.model.Role;
 import com.gmail.silina.katsiaryna.repository.model.RoleEnum;
 import com.gmail.silina.katsiaryna.repository.model.User;
 import com.gmail.silina.katsiaryna.service.ConvertService;
-import com.gmail.silina.katsiaryna.service.RoleService;
 import com.gmail.silina.katsiaryna.service.UserService;
 import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
 import com.gmail.silina.katsiaryna.service.dto.UserDTO;
@@ -30,7 +29,7 @@ import static com.gmail.silina.katsiaryna.service.constant.ServiceConstant.USER_
 @Slf4j
 @AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
-    private final RoleService roleService;
+    //private final RoleService roleService;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

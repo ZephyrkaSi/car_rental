@@ -72,22 +72,4 @@ public class OrderController {
             return "order_success_addition";
         }
     }
-
-    /*@CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/api/orders")
-    public ResponseEntity<ErrorDTO> addOrder(@RequestBody @Valid OrderFormDTO orderFormDTO, BindingResult errors) {
-        if (!errors.hasErrors()) {
-            orderService.addOrder(orderFormDTO);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } else {
-            ErrorDTO error = new ErrorDTO();
-            var errorMessages = errors.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.toList());
-            error.getErrors().addAll(errorMessages);
-            log.error("Order filling error: {}", errors);
-            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-        }
-    }*/
-
 }

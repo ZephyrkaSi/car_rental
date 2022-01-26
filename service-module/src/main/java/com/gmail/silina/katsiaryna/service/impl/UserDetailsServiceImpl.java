@@ -7,6 +7,7 @@ import com.gmail.silina.katsiaryna.service.ConvertService;
 import com.gmail.silina.katsiaryna.service.DiscountStatusService;
 import com.gmail.silina.katsiaryna.service.UserDetailsService;
 import com.gmail.silina.katsiaryna.service.dto.UserDetailsDTO;
+import com.gmail.silina.katsiaryna.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,20 +22,41 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails getUserDetailsById(Long id) {
-        var optionalOrder = userDetailsRepository.findById(id);
-        return optionalOrder.orElse(null);
+        if (id == null) {
+            log.error("User details id cannot be null");
+            throw new ServiceException("User details id cannot be null");
+        } else {
+            var optionalUserDetails = userDetailsRepository.findById(id);
+            if (optionalUserDetails.isPresent()) {
+                return optionalUserDetails.get();
+            } else {
+                log.error("User details with id {} doesn't exist", id);
+                throw new ServiceException("User details with id " + id + " doesn't exist");
+            }
+        }
     }
 
     @Override
     public UserDetailsDTO getUserDetailsDTOById(Long id) {
-        var userDetails = getUserDetailsById(id);
-        return convertService.getDTOFromObject(userDetails, UserDetailsDTO.class);
+        if (id == null) {
+            log.error("User details id cannot be null");
+            throw new ServiceException("User details id cannot be null");
+        } else {
+            var userDetails = getUserDetailsById(id);
+            if (userDetails == null) {
+                log.error("User details with id {} doesn't exist", id);
+                throw new ServiceException("User details with id " + id + " doesn't exist");
+            } else {
+                return convertService.getDTOFromObject(userDetails, UserDetailsDTO.class);
+            }
+        }
     }
 
     @Override
     public void add(UserDetails userDetails) {
         var discountStatus = discountStatusService.getDiscountStatus(DiscountStatusEnum.BRONZE);
         userDetails.setDiscountStatus(discountStatus);
+        log.info("Saving user details.");
         userDetailsRepository.save(userDetails);
     }
 
@@ -50,6 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userDetails.setFirstName(firstName);
         userDetails.setLastName(lastName);
         userDetails.setPassportData(passportData);
+        log.info("Changing user details.");
         userDetailsRepository.save(userDetails);
     }
 }
