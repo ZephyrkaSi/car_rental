@@ -15,14 +15,18 @@
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
-        <repository-module.version>1.0-SNAPSHOT</repository-module.version>
+        <mysql.version>1.16.3</mysql.version>
+        <testcontainers.version>1.16.3</testcontainers.version>
+        <jakarta.validation-api.version>3.0.0</jakarta.validation-api.version>
+        <hibernate-validator.version>7.0.2.Final</hibernate-validator.version>
+        <mysql-connector-java.version>8.0.27</mysql-connector-java.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.gmail.silina.katsiaryna.repository</groupId>
             <artifactId>repository-module</artifactId>
-            <version>${repository-module.version}</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -31,48 +35,36 @@
         <dependency>
             <groupId>com.gmail.silina.katsiaryna</groupId>
             <artifactId>config-module</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>7.0.2.Final</version>
+            <version>${hibernate-validator.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <version>3.0.0</version>
+            <version>${jakarta.validation-api.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.testcontainers/testcontainers -->
+        
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
-            <version>1.16.3</version>
+            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.testcontainers/mysql -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mysql</artifactId>
-            <version>1.16.3</version>
+            <version>${mysql.version}</version>
             <scope>test</scope>
         </dependency>
-
-
-        <!--        <dependency>
-                    <groupId>org.junit.jupiter</groupId>
-                    <artifactId>junit-jupiter-api</artifactId>
-                    <scope>test</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.junit.jupiter</groupId>
-                    <artifactId>junit-jupiter-engine</artifactId>
-                    <scope>test</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-test</artifactId>
-                    <scope>test</scope>
-                </dependency>-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
