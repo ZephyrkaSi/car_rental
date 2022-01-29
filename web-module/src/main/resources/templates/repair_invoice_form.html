@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <title>Car rental.Repair invoice form</title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"/>
+<div class="text-center">
+    <h1 class="text-danger">Repair invoice</h1>
+    <br/>
+    <form th:action="@{/invoices/add}" th:method="POST">
+        <div th:object="${repairInvoice}">
+            <label for="client">Client:</label>
+            <select id="client" required="required" th:field="*{client.id}">
+                <option value="">Choose client</option>
+                <option th:each="client : ${clients}"
+                        th:text="${client.userDetails.lastName} + ' ' + ${client.userDetails.lastName} + ' ' + ${client.userDetails.passportData} + ' ' + ${client.email}"
+                        th:value="${client.id}">
+                </option>
+            </select>
+            <br/>
+            <br/>
+            <label for="car">Car:</label>
+            <select id="car" required="required" th:field="*{car.id}">
+                <option value="">Choose car</option>
+                <option th:each="car : ${cars}"
+                        th:text="${car.carModel.brandName} + ' ' + ${car.carModel.model} + ' ' + ${car.getStateNumber()}"
+                        th:value="${car.id}">
+                </option>
+            </select>
+            <br/>
+            <br/>
+            <label for="damageInfo">Damage info:</label>
+            <input id="damageInfo" required="required" th:field="*{damageInfo}"/>
+            <br/>
+            <br/>
+            <label for="cost">Cost:</label>
+            <input id="cost" min="0" required="required" th:field="*{cost}" type="number"/>
+            <div style="color: red"
+                 th:errors="*{cost}"
+                 th:if="${#fields.hasErrors('cost')}">
+                Cost data error
+            </div>
+            <br/>
+            <br/>
+            <label for="addInfo">Add info:</label>
+            <input id="addInfo" th:field="*{addInfo}" type="text"/>
+            <br/>
+            <br/>
+            <input class="btn btn-outline-danger btn-lg" type="submit" value="Create repair invoice">
+            <div style="color: red" th:if="${#fields.hasGlobalErrors()}">
+                <p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

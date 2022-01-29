@@ -6,7 +6,8 @@ import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
 import java.util.List;
 
 public interface RoleService {
-    List<RoleDTO> getAll();
 
-    Role getByName(String name);
+    Role getRoleById(Long id);
+
+    List<RoleDTO> getAllRoleDTOs();
 }

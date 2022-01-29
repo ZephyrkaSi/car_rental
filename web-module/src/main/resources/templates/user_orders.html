@@ -1,0 +1,85 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Orders</title>
+
+    <link href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css"
+          rel="stylesheet"
+          type="text/css"/>
+    <link crossorigin="anonymous"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"/>
+
+<div class="container">
+
+    <h3>My orders</h3>
+
+    <br/><br/>
+    <table class="table table-bordered table-striped" id="orderTable">
+
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Order date</th>
+            <th>Date and time from</th>
+            <th>Date and time to</th>
+            <th>Car brand</th>
+            <th>Car model</th>
+            <th>Car state number</th>
+            <th>Order status</th>
+            <th>Admin's decline reason</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${#temporals.format(order.orderDate, 'HH/MM/YYYY hh:mm')}"></td>
+            <td th:text="${#temporals.format(order.dateAndTimeFrom, 'HH/MM/YYYY hh:mm')}"></td>
+            <td th:text="${#temporals.format(order.dateAndTimeTo, 'HH/MM/YYYY hh:mm')}"></td>
+            <td th:text="${order.carModel.getBrandName()}"></td>
+            <td th:text="${order.carModel.getModel()}"></td>
+            <td th:text="${order.car.getStateNumber()}"></td>
+            <td th:text="${order.getOrderStatus().description}"></td>
+            <td th:text="${order.getDeclineReason()}"></td>
+
+            <td>
+                <a class="btn btn-primary" th:href="@{/users/myOrders/pay(orderId=${order.id})}"
+                   th:if="${order.orderStatus.id} == 1">
+                    Pay
+                </a>
+                <br/><br/>
+                <a class="btn btn-outline-danger" th:href="@{/users/myOrders/decline(orderId=${order.id})}"
+                   th:if="${order.orderStatus.id} == 2">
+                    Decline order
+                </a>
+
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        $("#orderTable").DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': [-1] /* 1st one, start by the right */
+            }]
+        });
+    })
+</script>
+</body>
+
+</html>

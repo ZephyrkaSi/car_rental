@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class OrderStatusDTO {
-    private Integer id;
+    private Long id;
     private String orderStatus;
     private String description;
 }

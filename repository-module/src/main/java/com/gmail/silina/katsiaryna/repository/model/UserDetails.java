@@ -1,6 +1,5 @@
 package com.gmail.silina.katsiaryna.repository.model;
 
-
 import lombok.*;
 import org.hibernate.Hibernate;
 

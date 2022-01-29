@@ -1,0 +1,15 @@
+### GET all cars with default pageble values (size=3, page=0)
+GET http://localhost:8080/api/cars
+Accept: application/json
+
+### GET all cars with pageble values in the following paramethers: size=4, page=1
+GET http://localhost:8080/api/cars?size=4&page=1
+Accept: application/json
+
+### GET car with id=1
+GET http://localhost:8080/api/cars/1
+Accept: application/json
+
+### GET car with id=7 (Exception expected)
+GET http://localhost:8080/api/cars/7
+Accept: application/json

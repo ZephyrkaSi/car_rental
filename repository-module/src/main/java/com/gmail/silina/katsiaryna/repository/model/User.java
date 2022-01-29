@@ -8,7 +8,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -38,7 +42,7 @@ public class User implements org.springframework.security.core.userdetails.UserD
     @Column(name = "ENABLED")
     private boolean enabled = true;
     @Column(name = "LASTLOGIN")
-    private Date lastLogin;
+    private LocalDateTime lastLogin;
     @ManyToOne
     @JoinColumn(name = "ROLE_ID")
     private Role role;

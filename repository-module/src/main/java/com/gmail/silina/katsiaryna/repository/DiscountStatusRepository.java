@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DiscountStatusRepository extends JpaRepository<DiscountStatus, Integer> {
-    @Query("SELECT ds FROM DiscountStatus ds WHERE ds.discountStatusEnum = :status")
+    @Query("SELECT ds FROM DiscountStatus ds WHERE ds.discountStatus = :status")
     DiscountStatus findByStatus(@Param("status") DiscountStatusEnum status);
 }

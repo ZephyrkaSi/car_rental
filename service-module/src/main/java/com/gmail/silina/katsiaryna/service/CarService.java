@@ -1,19 +1,26 @@
 package com.gmail.silina.katsiaryna.service;
 
 import com.gmail.silina.katsiaryna.repository.model.Car;
-import com.gmail.silina.katsiaryna.repository.model.CarModel;
-import com.gmail.silina.katsiaryna.repository.model.CarStatusEnum;
+import com.gmail.silina.katsiaryna.service.dto.CarDTO;
+import com.gmail.silina.katsiaryna.service.dto.PageDTO;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CarService {
 
+    Car getCarById(Long id);
+
+    CarDTO getCarDTOById(Long id);
+
     List<Car> getAll();
 
-    List<Car> getAvailableCars(CarModel carModel, LocalDateTime begin, LocalDateTime end);
+    List<CarDTO> getAllCarDTOs();
 
-    List<Car> getBrokenCars();
+    PageDTO<CarDTO> getAllCarDTOsByPage(Pageable pageable);
 
-    void changeCarStatus(Car car, CarStatusEnum carStatusEnum);
+    List<Car> getAvailableCars(Long carModelId, LocalDateTime begin, LocalDateTime end);
+
+    void updateCarStatusFrom(CarDTO carDTO);
 }

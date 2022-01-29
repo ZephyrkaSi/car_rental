@@ -2,30 +2,42 @@ package com.gmail.silina.katsiaryna.service.impl;
 
 import com.gmail.silina.katsiaryna.repository.RoleRepository;
 import com.gmail.silina.katsiaryna.repository.model.Role;
+import com.gmail.silina.katsiaryna.service.ConvertService;
 import com.gmail.silina.katsiaryna.service.RoleService;
 import com.gmail.silina.katsiaryna.service.dto.RoleDTO;
+import com.gmail.silina.katsiaryna.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    private RoleRepository roleRepository;
-    private ModelMapper modelMapper;
+    private final RoleRepository roleRepository;
+    private final ConvertService convertService;
 
     @Override
-    public List<RoleDTO> getAll() {
-        return roleRepository.findAll().stream()
-                .map(role -> modelMapper.map(role, RoleDTO.class))
-                .collect(Collectors.toList());
+    public Role getRoleById(Long id) {
+        if (id == null) {
+            log.error("Role id cannot be null");
+            throw new ServiceException("Role id cannot be null");
+        } else {
+            var optionalRole = roleRepository.findById(id);
+            if (optionalRole.isPresent()) {
+                return optionalRole.get();
+            } else {
+                log.error("Role with id {} doesn't exist", id);
+                throw new ServiceException("Role with id " + id + " doesn't exist");
+            }
+        }
     }
 
     @Override
-    public Role getByName(String name) {
-        return null;
+    public List<RoleDTO> getAllRoleDTOs() {
+        var roles = roleRepository.findAll();
+        return convertService.getDTOsFromObjectList(roles, RoleDTO.class);
     }
 }

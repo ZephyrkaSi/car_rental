@@ -1,62 +1,97 @@
 package com.gmail.silina.katsiaryna.service.impl;
 
-import com.gmail.silina.katsiaryna.repository.CarModelRepository;
 import com.gmail.silina.katsiaryna.repository.OrderRepository;
-import com.gmail.silina.katsiaryna.repository.UserRepository;
 import com.gmail.silina.katsiaryna.repository.model.*;
-import com.gmail.silina.katsiaryna.service.CarService;
-import com.gmail.silina.katsiaryna.service.OrderService;
-import com.gmail.silina.katsiaryna.service.OrderStatusService;
+import com.gmail.silina.katsiaryna.service.*;
 import com.gmail.silina.katsiaryna.service.dto.OrderDTO;
 import com.gmail.silina.katsiaryna.service.dto.OrderFormDTO;
 import com.gmail.silina.katsiaryna.service.exception.OrderException;
+import com.gmail.silina.katsiaryna.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.gmail.silina.katsiaryna.service.constant.ServiceConstant.MAX_DISCOUNT;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderStatusService orderStatusService;
-    //TODO REMOVE THIS WHEN LOGIN ADDED
-    private final UserRepository userRepository;
-    //TODO REMOVE THIS WHEN CAR MODEL FORM ADDED
-    private final CarModelRepository carModelRepository;
+    private final UserService userService;
     private final CarService carService;
-    private final ModelMapper modelMapper;
+    private final ConvertService convertService;
 
     @Override
-    public List<OrderDTO> getAllOrders() {
+    public Order getOrderById(Long id) {
+        if (id == null) {
+            log.error("Order id cannot be null");
+            throw new ServiceException("Order id cannot be null");
+        } else {
+            var orderOptional = orderRepository.findById(id);
+            if (orderOptional.isPresent()) {
+                return orderOptional.get();
+            } else {
+                log.error("Order with id {} doesn't exist", id);
+                throw new ServiceException("Order with id " + id + " doesn't exist");
+            }
+        }
+    }
+
+    @Override
+    public OrderDTO getOrderDTOById(Long id) {
+        if (id == null) {
+            log.error("Order id cannot be null");
+            throw new ServiceException("Order id cannot be null");
+        } else {
+            var order = getOrderById(id);
+            if (order == null) {
+                log.error("Order with id {} doesn't exist", id);
+                throw new ServiceException("Order with id " + id + " doesn't exist");
+            } else {
+                return convertService.getDTOFromObject(order, OrderDTO.class);
+            }
+        }
+
+    }
+
+    @Override
+    public List<OrderDTO> getUserOrdersDTOsByUserId(Long userId) {
+        if (userId == null) {
+            log.error("User id cannot be null");
+            throw new ServiceException("User id cannot be null");
+        } else {
+            var orders = orderRepository.getAllUserOrdersByUserId(userId);
+            return convertService.getDTOsFromObjectList(orders, OrderDTO.class);
+        }
+    }
+
+    @Override
+    public List<OrderDTO> getAllOrderDTOs() {
         var orders = orderRepository.findAll();
-        return orders.stream()
-                .map(order -> modelMapper.map(order, OrderDTO.class))
-                .collect(Collectors.toList());
+        return convertService.getDTOsFromObjectList(orders, OrderDTO.class);
     }
 
     @Override
     public void addOrder(OrderFormDTO orderFormDTO) {
-        //TODO ADD LOGS
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        var order = modelMapper.map(orderFormDTO, Order.class);
+        var order = convertService.getObjectFromDTO(orderFormDTO, Order.class);
 
         var carModel = order.getCarModel();
+        var carModelId = carModel.getId();
         var dateAndTimeFrom = order.getDateAndTimeFrom();
         var dateAndTimeTo = order.getDateAndTimeTo();
 
-        order.setCar(getOrderCar(carModel, dateAndTimeFrom, dateAndTimeTo));
+        order.setCar(getOrderCar(carModelId, dateAndTimeFrom, dateAndTimeTo));
 
-        //TODO REMOVE THIS WHEN LOGIN ADDED
-        var user = userRepository.findById(3L).get();
+        var userId = userService.getPrincipalUserId();
+        var user = userService.getUserById(userId);
         order.setUser(user);
 
         order.setDiscount(getDiscount(user));
@@ -64,12 +99,62 @@ public class OrderServiceImpl implements OrderService {
         var priceWithDiscount = getPriceWithDiscount(carModel, dateAndTimeFrom, dateAndTimeTo, user);
         order.setPriceWithDiscount(priceWithDiscount);
 
-        order.setOrderStatus(orderStatusService.getOrderStatus(OrderStatusEnum.WAITING_FOR_PAYMENT));
+        var orderStatus = orderStatusService.getOrderStatus(OrderStatusEnum.WAITING_FOR_PAYMENT);
+        order.setOrderStatus(orderStatus);
+        log.info("Creating new order.");
         orderRepository.save(order);
     }
 
-    private Car getOrderCar(CarModel carModel, LocalDateTime dateAndTimeFrom, LocalDateTime dateAndTimeTo) {
-        var availableCars = carService.getAvailableCars(carModel, dateAndTimeFrom, dateAndTimeTo);
+    @Override
+    public void changeOrderStatusFromWaitingForPaymentToPaid(Long orderId) {
+        if (orderId == null) {
+            log.error("Order id cannot be null");
+            throw new ServiceException("Order id cannot be null");
+        } else {
+            var order = getOrderById(orderId);
+            if (order == null) {
+                log.error("Order with id {} doesn't exist", orderId);
+                throw new ServiceException("Order with id " + orderId + " doesn't exist");
+            } else {
+                var status = order.getOrderStatus();
+                if (status.getOrderStatus().equals(OrderStatusEnum.WAITING_FOR_PAYMENT)) {
+                    order.setOrderStatus(orderStatusService.getOrderStatus(OrderStatusEnum.PAID));
+                    log.info("Changing order status with id {}", orderId);
+                    orderRepository.save(order);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void changeOrderStatusFromWaitingForPaymentToCanceledByClient(Long orderId) {
+        var order = getOrderById(orderId);
+        var status = order.getOrderStatus();
+        if (status.getOrderStatus().equals(OrderStatusEnum.PAID)) {
+            order.setOrderStatus(orderStatusService.getOrderStatus(OrderStatusEnum.CANCELED_BY_CLIENT));
+            log.info("Changing order status with id {}", orderId);
+            orderRepository.save(order);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateOrderStatusAndDeclineReasonFrom(OrderDTO orderDTO) {
+        var orderId = orderDTO.getId();
+        var order = getOrderById(orderId);
+
+        var orderStatusId = orderDTO.getOrderStatus().getId();
+        var orderStatus = orderStatusService.getOrderStatusById(orderStatusId);
+        order.setOrderStatus(orderStatus);
+
+        var declineReason = orderDTO.getDeclineReason();
+        order.setDeclineReason(declineReason);
+        log.info("Updating order status with id {} and decline reason", orderId);
+        orderRepository.save(order);
+    }
+
+    private Car getOrderCar(Long carModelId, LocalDateTime dateAndTimeFrom, LocalDateTime dateAndTimeTo) {
+        var availableCars = carService.getAvailableCars(carModelId, dateAndTimeFrom, dateAndTimeTo);
         if (availableCars.isEmpty()) {
             throw new OrderException("There is no available cars for this time range. Please change time range or pick another car model");
         }
