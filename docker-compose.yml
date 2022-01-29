@@ -13,5 +13,3 @@ services:
       MYSQL_PASSWORD: adminPass
     ports:
       - '3306:3306'
-    volumes:
-      - ./repository-module/src/main/resources/sql:/docker-entrypoint-initdb.d
