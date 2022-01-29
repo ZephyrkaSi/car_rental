@@ -153,6 +153,7 @@ class OrderServiceImplTest {
     @Test
     void addOrder() {
         OrderFormDTO orderFormDTO = new OrderFormDTO();
+        //todo maggic numbers . NOT ONLY IN THIS TEST
         var carModel = carModelRepository.findById(4L).get();
         orderFormDTO.setCarModel(carModel);
         orderFormDTO.setDateAndTimeFrom(LocalDateTime.of(2017, Month.JULY, 9, 11, 10, 0));
@@ -173,12 +174,12 @@ class OrderServiceImplTest {
     void changeOrderStatusFromWaitingForPaymentToPaid(Long orderId, boolean expectOrderInDB) {
         if (expectOrderInDB) {
             var order = orderRepository.findById(orderId).get();
-            var actualOrderStatusEnum = order.getOrderStatus().getOrderStatusEnum();
+            var actualOrderStatusEnum = order.getOrderStatus().getOrderStatus();
             Assertions.assertEquals(OrderStatusEnum.WAITING_FOR_PAYMENT, actualOrderStatusEnum);
 
             orderService.changeOrderStatusFromWaitingForPaymentToPaid(orderId);
 
-            var changedOrderStatusEnum = order.getOrderStatus().getOrderStatusEnum();
+            var changedOrderStatusEnum = order.getOrderStatus().getOrderStatus();
             Assertions.assertEquals(OrderStatusEnum.PAID, changedOrderStatusEnum);
         } else {
             var serviceException = Assertions.assertThrows(Exception.class, () -> {
@@ -198,12 +199,12 @@ class OrderServiceImplTest {
     void changeOrderStatusFromWaitingForPaymentToCanceledByClient(Long orderId, boolean expectOrderInDB) {
         if (expectOrderInDB) {
             var order = orderRepository.findById(orderId).get();
-            var actualOrderStatusEnum = order.getOrderStatus().getOrderStatusEnum();
+            var actualOrderStatusEnum = order.getOrderStatus().getOrderStatus();
             Assertions.assertEquals(OrderStatusEnum.WAITING_FOR_PAYMENT, actualOrderStatusEnum);
 
             orderService.changeOrderStatusFromWaitingForPaymentToCanceledByClient(orderId);
 
-            var changedOrderStatusEnum = order.getOrderStatus().getOrderStatusEnum();
+            var changedOrderStatusEnum = order.getOrderStatus().getOrderStatus();
             Assertions.assertEquals(OrderStatusEnum.CANCELED_BY_CLIENT, changedOrderStatusEnum);
         } else {
             var serviceException = Assertions.assertThrows(Exception.class, () -> {
@@ -221,7 +222,7 @@ class OrderServiceImplTest {
     @Test
     void updateOrderStatusAndDeclineReasonFrom() {
         OrderDTO orderDTO = new OrderDTO();
-        OrderStatusDTO orderStatusDTO = OrderStatusDTO.builder().build();
+        OrderStatusDTO orderStatusDTO = new OrderStatusDTO();
         orderStatusDTO.setId(5L);
         orderStatusDTO.setDescription(OrderStatusEnum.WAITING_FOR_PAYMENT.name());
         orderStatusDTO.setOrderStatus(OrderStatusEnum.WAITING_FOR_PAYMENT.getStatus());

@@ -1,5 +1,8 @@
 package com.gmail.silina.katsiaryna.service;
 
+import com.gmail.silina.katsiaryna.service.dto.PageDTO;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface ConvertService {
@@ -9,4 +12,6 @@ public interface ConvertService {
     <T, D> D getDTOFromObject(T obj, Class<D> dto);
 
     <T, D> List<D> getDTOsFromObjectList(List<T> list, Class<D> clazz);
+
+    <T, D> PageDTO<D> getPageDTOFromPage(Page<T> page, Class<D> clazz);
 }

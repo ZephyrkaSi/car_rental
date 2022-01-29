@@ -5,14 +5,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import static com.gmail.silina.katsiaryna.constant.HandlerConstants.MAIN_URL;
+
 @Controller
-@RequestMapping("/")
+@RequestMapping(MAIN_URL)
 public class MainController {
 
     @GetMapping
     public String welcomePage(Model model) {
         model.addAttribute("title", "Car rental");
-        model.addAttribute("message", "This is welcome page!");
         return "home";
     }
 

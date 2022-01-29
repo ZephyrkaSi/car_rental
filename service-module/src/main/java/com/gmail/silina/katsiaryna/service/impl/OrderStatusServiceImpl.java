@@ -54,7 +54,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
     public List<OrderStatusDTO> getEligibleStatusesForOrder(OrderDTO orderDTO) {
         var orderStatusDTO = orderDTO.getOrderStatus();
         var status = orderStatusDTO.getOrderStatus();
-        var statusEnum = OrderStatusEnum.findByStatus(status);
+        var statusEnum = OrderStatusEnum.findByEnumName(status);
 
         var statuses = convertService.getDTOsFromObjectList(getAllStatuses(), OrderStatusDTO.class);
 
@@ -62,12 +62,12 @@ public class OrderStatusServiceImpl implements OrderStatusService {
             case WAITING_FOR_PAYMENT:
             case CONFIRMED:
                 return statuses.stream()
-                        .filter(el -> el.getOrderStatus().equals(OrderStatusEnum.DECLINED_BY_ADMIN.getStatus()))
+                        .filter(el -> el.getId().equals(5L))
                         .collect(Collectors.toList());
             case PAID:
                 return statuses.stream()
                         .filter(el -> el.getOrderStatus().equals(CONFIRMED.getStatus()) ||
-                                el.getOrderStatus().equals(OrderStatusEnum.DECLINED_BY_ADMIN.getStatus()))
+                                el.getId().equals(5L))
                         .collect(Collectors.toList());
             default:
                 return List.of(orderStatusDTO);

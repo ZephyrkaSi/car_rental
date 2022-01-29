@@ -49,6 +49,7 @@ class RepairInvoiceServiceImplTest {
     @MockBean
     private UserService userService;
 
+    //todo why compare only size?
     @Test
     void getAllRepairInvoiceDTOs() {
         var expectedInvoices = repairInvoiceRepository.findAll();

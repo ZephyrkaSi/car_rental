@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.gmail.silina.katsiaryna.constant.HandlerConstants.ORDERS_URL;
+
 @Slf4j
 @Controller
-@RequestMapping("/orders")
+@RequestMapping(ORDERS_URL)
 @AllArgsConstructor
 public class OrderController {
     private final OrderService orderService;

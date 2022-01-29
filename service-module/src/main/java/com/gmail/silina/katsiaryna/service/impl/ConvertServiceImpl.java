@@ -1,8 +1,10 @@
 package com.gmail.silina.katsiaryna.service.impl;
 
 import com.gmail.silina.katsiaryna.service.ConvertService;
+import com.gmail.silina.katsiaryna.service.dto.PageDTO;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,5 +30,17 @@ public class ConvertServiceImpl implements ConvertService {
         return list.stream()
                 .map(el -> modelMapper.map(el, clazz))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public <T, D> PageDTO<D> getPageDTOFromPage(Page<T> page, Class<D> clazz) {
+        List<D> dtoList = page.get()
+                .map(el -> modelMapper.map(el, clazz))
+                .collect(Collectors.toList());
+        PageDTO<D> pageDTO = new PageDTO<>();
+        pageDTO.setContent(dtoList);
+        pageDTO.setTotal(page.getTotalElements());
+        pageDTO.setPageable(page.getPageable());
+        return pageDTO;
     }
 }

@@ -21,7 +21,7 @@ public class OrderStatus {
     private Long id;
     @Column(name = "STATUS")
     @Convert(converter = OrderStatusConverter.class)
-    private OrderStatusEnum orderStatusEnum;
+    private OrderStatusEnum orderStatus;
     @Column(name = "DESCRIPTION")
     private String description;
     @OneToMany(mappedBy = "orderStatus", fetch = FetchType.LAZY)
@@ -36,14 +36,14 @@ public class OrderStatus {
         OrderStatus that = (OrderStatus) o;
 
         if (!Objects.equals(id, that.id)) return false;
-        if (orderStatusEnum != that.orderStatusEnum) return false;
+        if (orderStatus != that.orderStatus) return false;
         return Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (orderStatusEnum != null ? orderStatusEnum.hashCode() : 0);
+        result = 31 * result + (orderStatus != null ? orderStatus.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderStatusRepository extends JpaRepository<OrderStatus, Long> {
-    @Query("SELECT os FROM OrderStatus os WHERE os.orderStatusEnum = :status")
+    @Query("SELECT os FROM OrderStatus os WHERE os.orderStatus = :status")
     OrderStatus findByStatus(@Param("status") OrderStatusEnum status);
 }

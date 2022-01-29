@@ -9,77 +9,76 @@
 
 <th:block th:include="/_menu"></th:block>
 
-<h1>Registration form</h1>
+<div class="container">
 
-<form th:action="@{/users/registration}" th:method="POST">
+    <h1>Registration form</h1>
+    </br>
+    <form th:action="@{/users/registration}" th:method="POST">
 
-    <div th:object="${user}">
+        <div th:object="${user}">
 
-        <label for="username">Enter username: </label>
-        <input id="username" th:field="*{username}" type="text"/>
-        <div style="color: red"
-             th:errors="*{username}"
-             th:if="${#fields.hasErrors('username')}">
-            Username error
+            <label for="username">Enter username: </label>
+            <input id="username" th:field="*{username}" type="text"/>
+            <div style="color: red"
+                 th:errors="*{username}"
+                 th:if="${#fields.hasErrors('username')}">
+                Username error
+            </div>
+
+            <br/>
+
+            <label for="password">Enter password: </label>
+            <input id="password" th:field="*{password}" type="password"/>
+            <div style="color: red"
+                 th:errors="*{password}"
+                 th:if="${#fields.hasErrors('password')}">
+                Password error
+            </div>
+
+            <br/>
+
+            <label for="email">Enter email: </label>
+            <input id="email" th:field="*{email}" type="text">
+            <div style="color: red"
+                 th:errors="*{email}"
+                 th:if="${#fields.hasErrors('email')}">
+                Email error
+            </div>
         </div>
 
-        <br/>
+        <div th:object="${userDetails}">
 
-        <label for="password">Enter password: </label>
-        <input id="password" th:field="*{password}" type="password"/>
-        <div style="color: red"
-             th:errors="*{password}"
-             th:if="${#fields.hasErrors('password')}">
-            Password error
+            <label for="firstName">Enter first name: </label>
+            <input id="firstName" th:field="*{firstName}" type="text">
+            <div style="color: red"
+                 th:errors="*{firstName}"
+                 th:if="${#fields.hasErrors('firstName')}">
+                First name error
+            </div>
+
+            <br/>
+
+            <label for="lastName">Enter last name: </label>
+            <input id="lastName" th:field="*{lastName}" type="text">
+            <div style="color: red"
+                 th:errors="*{lastName}"
+                 th:if="${#fields.hasErrors('lastName')}">
+                Last name error
+            </div>
+
+            <br/>
+
+            <label for="passportData">Enter passport data: </label>
+            <input id="passportData" th:field="*{passportData}" type="text">
+            <div style="color: red"
+                 th:errors="*{passportData}"
+                 th:if="${#fields.hasErrors('passportData')}">
+                Passport data error
+            </div>
         </div>
 
-        <br/>
-
-        <label for="email">Enter email: </label>
-        <input id="email" th:field="*{email}" type="text">
-        <div style="color: red"
-             th:errors="*{email}"
-             th:if="${#fields.hasErrors('email')}">
-            Email error
-        </div>
-    </div>
-
-    <div th:object="${userDetails}">
-
-        <label for="firstName">Enter first name: </label>
-        <input id="firstName" th:field="*{firstName}" type="text">
-        <div style="color: red"
-             th:errors="*{firstName}"
-             th:if="${#fields.hasErrors('firstName')}">
-            First name error
-        </div>
-
-        <br/>
-
-        <label for="lastName">Enter last name: </label>
-        <input id="lastName" th:field="*{lastName}" type="text">
-        <div style="color: red"
-             th:errors="*{lastName}"
-             th:if="${#fields.hasErrors('lastName')}">
-            Last name error
-        </div>
-
-        <br/>
-
-        <label for="passportData">Enter passport data: </label>
-        <input id="passportData" th:field="*{passportData}" type="text">
-        <div style="color: red"
-             th:errors="*{passportData}"
-             th:if="${#fields.hasErrors('passportData')}">
-            Passport data error
-        </div>
-    </div>
-    <!--
-        <input th:field="*{userDetails}" th:include="${userDetails}" type="hidden">
-    -->
-
-    <input type="submit" value="Create!">
-</form>
-
+        <input class="btn btn-info btn-lg" type="submit" value="Sing Up!">
+    </form>
+</div>
 </body>
 </html>

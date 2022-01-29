@@ -16,6 +16,8 @@ import javax.sql.DataSource;
 /*@EnableJpaRepositories(basePackages = {"com.gmail.silina.katsiaryna.repository"})
 @EntityScan("com.gmail.silina.katsiaryna.repository.model")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)*/
+
+//todo you should try to put here annotations from other test classes to avoid pollution of code
 public class IntegrationConfig {
 
     @Bean

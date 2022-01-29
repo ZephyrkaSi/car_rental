@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -121,6 +122,15 @@ class CarServiceImplTest {
     }
 
     @Test
+    void getAllCarDTOsByPage() {
+        Pageable pageable = Pageable.unpaged();
+        var cars = carRepository.findAll(pageable);
+        var expectedCarDTOs = convertService.getPageDTOFromPage(cars, CarDTO.class);
+        var resultCarDTOs = carService.getAllCarDTOsByPage(pageable);
+        Assertions.assertEquals(expectedCarDTOs, resultCarDTOs);
+    }
+
+    @Test
     void getAvailableCars() {
         var begin = LocalDateTime.of(2017, Month.JULY, 9, 11, 10, 0);
         var end = LocalDateTime.of(2017, Month.JULY, 9, 18, 20, 0);
@@ -135,7 +145,7 @@ class CarServiceImplTest {
         Long statusId = 3L;
         var carStatus = carStatusRepository.findById(statusId).get();
         carStatusDTO.setId(statusId);
-        carStatusDTO.setCarStatus(carStatus.getCarStatusEnum().name());
+        carStatusDTO.setCarStatus(carStatus.getCarStatus().name());
 
         Long carId = 1L;
         carDTO.setId(carId);
@@ -146,6 +156,7 @@ class CarServiceImplTest {
         //testing
         Assertions.assertNotEquals(car.getCarStatus(), carStatus);
 
+        //todo not clear what is happening in this test
         carService.updateCarStatusFrom(carDTO);
         Assertions.assertEquals(car.getCarStatus(), carStatus);
     }

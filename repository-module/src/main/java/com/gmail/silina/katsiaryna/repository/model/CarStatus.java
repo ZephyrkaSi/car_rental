@@ -21,7 +21,7 @@ public class CarStatus {
     @Column(name = "STATUS")
     @Size(max = 10)
     @Enumerated(EnumType.STRING)
-    private CarStatusEnum carStatusEnum;
+    private CarStatusEnum carStatus;
     @OneToMany(mappedBy = "carStatus")
     @ToString.Exclude
     private Collection<Car> cars;

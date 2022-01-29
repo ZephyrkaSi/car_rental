@@ -19,11 +19,9 @@
 
 <div class="container">
 
-    <h3>Orders</h3>
+    <h3 class="text-dark">Orders</h3>
 
-    <!--<hr/>
-    <a class="btn btn-primary" th:href="@{/addEmployeeForm}">Add Employee</a>
-    --><br/><br/>
+    <br/>
     <table class="table table-bordered table-striped" id="orderTable">
 
         <thead>
@@ -55,9 +53,9 @@
             <td th:text="${order.carModel.getBrandName()}"></td>
             <td th:text="${order.carModel.getModel()}"></td>
             <td th:text="${order.car.getStateNumber()}"></td>
-            <td th:text="${order.getOrderStatus().getOrderStatus()}"></td>
+            <td th:text="${order.getOrderStatus().description}"></td>
             <td th:text="${order.getDeclineReason()}"></td>
-            
+
             <td>
                 <a class="btn btn-info" th:href="@{/orders/showUpdateForm(orderId=${order.id})}"
                    th:if="

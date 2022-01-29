@@ -73,7 +73,7 @@ class OrderStatusServiceImplTest {
     void getOrderStatus() {
         var expectedOrderStatusEnum = OrderStatusEnum.WAITING_FOR_PAYMENT;
         var orderStatus = orderStatusService.getOrderStatus(expectedOrderStatusEnum);
-        var actualOrderStatusEnum = orderStatus.getOrderStatusEnum();
+        var actualOrderStatusEnum = orderStatus.getOrderStatus();
         Assertions.assertEquals(expectedOrderStatusEnum, actualOrderStatusEnum);
     }
 
@@ -84,6 +84,7 @@ class OrderStatusServiceImplTest {
         Assertions.assertEquals(expectedNumberOfStatuses, actualNumberOfStatuses);
     }
 
+    //todo ?
     @Test
     void getEligibleStatusesForOrder() {
     }

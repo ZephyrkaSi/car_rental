@@ -6,9 +6,11 @@ import com.gmail.silina.katsiaryna.service.CarService;
 import com.gmail.silina.katsiaryna.service.CarStatusService;
 import com.gmail.silina.katsiaryna.service.ConvertService;
 import com.gmail.silina.katsiaryna.service.dto.CarDTO;
+import com.gmail.silina.katsiaryna.service.dto.PageDTO;
 import com.gmail.silina.katsiaryna.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -63,6 +65,12 @@ public class CarServiceImpl implements CarService {
     public List<CarDTO> getAllCarDTOs() {
         var cars = getAll();
         return convertService.getDTOsFromObjectList(cars, CarDTO.class);
+    }
+
+    @Override
+    public PageDTO<CarDTO> getAllCarDTOsByPage(Pageable pageable) {
+        var pagedCars = carRepository.findAll(pageable);
+        return convertService.getPageDTOFromPage(pagedCars, CarDTO.class);
     }
 
     @Override

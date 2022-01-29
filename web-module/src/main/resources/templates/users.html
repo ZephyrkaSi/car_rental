@@ -19,7 +19,7 @@
 
 <div class="container">
 
-    <h3>users</h3>
+    <h3>Users</h3>
 
     <!--<hr/>
     <a class="btn btn-primary" th:href="@{/addEmployeeForm}">Add Employee</a>
@@ -48,7 +48,7 @@
             <td th:text="${user.userDetails.getFirstName()}"></td>
             <td th:text="${user.userDetails.getLastName()}"></td>
             <td th:text="${user.enabled}"></td>
-            <td th:text="${user.lastLogin}"></td>
+            <td th:text="${#temporals.format(user.lastLogin, 'HH/MM/YYYY hh:mm')}"></td>
             <td>
                 <a class="btn btn-info" th:href="@{/users/showUpdateForm(userId=${user.id})}">Update</a>
 

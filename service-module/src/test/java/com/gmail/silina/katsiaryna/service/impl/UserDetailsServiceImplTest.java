@@ -105,6 +105,7 @@ class UserDetailsServiceImplTest {
         userDetails.setDiscountStatus(null);
         var initialDiscountStatus = userDetails.getDiscountStatus();
         userDetailsService.add(userDetails);
+        //todo would be nice to see which statuses are you comparing. Actual names
         var resultDiscountStatus = userDetails.getDiscountStatus();
         Assertions.assertNotEquals(initialDiscountStatus, resultDiscountStatus);
     }
@@ -116,6 +117,7 @@ class UserDetailsServiceImplTest {
         var initialLastName = initialUserDetails.getLastName();
         var initialPassportData = initialUserDetails.getPassportData();
         var userDetailsDTO = convertService.getDTOFromObject(initialUserDetails, UserDetailsDTO.class);
+        //todo where is the comparison of modified userdetails with these values?
         userDetailsDTO.setFirstName("Fname");
         userDetailsDTO.setLastName("Lname");
         userDetailsDTO.setPassportData("P2919");

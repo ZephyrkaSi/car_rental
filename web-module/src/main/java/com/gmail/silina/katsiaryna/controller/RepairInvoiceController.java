@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.gmail.silina.katsiaryna.constant.HandlerConstants.INVOICES_URL;
+
 @Controller
-@RequestMapping("/invoices")
+@RequestMapping(INVOICES_URL)
 @AllArgsConstructor
 public class RepairInvoiceController {
     private final RepairInvoiceService repairInvoiceService;

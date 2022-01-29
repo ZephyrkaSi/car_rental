@@ -117,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new ServiceException("Order with id " + orderId + " doesn't exist");
             } else {
                 var status = order.getOrderStatus();
-                if (status.getOrderStatusEnum().equals(OrderStatusEnum.WAITING_FOR_PAYMENT)) {
+                if (status.getOrderStatus().equals(OrderStatusEnum.WAITING_FOR_PAYMENT)) {
                     order.setOrderStatus(orderStatusService.getOrderStatus(OrderStatusEnum.PAID));
                     log.info("Changing order status with id {}", orderId);
                     orderRepository.save(order);
@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
     public void changeOrderStatusFromWaitingForPaymentToCanceledByClient(Long orderId) {
         var order = getOrderById(orderId);
         var status = order.getOrderStatus();
-        if (status.getOrderStatusEnum().equals(OrderStatusEnum.WAITING_FOR_PAYMENT)) {
+        if (status.getOrderStatus().equals(OrderStatusEnum.PAID)) {
             order.setOrderStatus(orderStatusService.getOrderStatus(OrderStatusEnum.CANCELED_BY_CLIENT));
             log.info("Changing order status with id {}", orderId);
             orderRepository.save(order);

@@ -9,25 +9,27 @@
           rel="stylesheet"/>
 </head>
 <body>
-<a th:href="@{/}">Home</a>
+<th:block th:include="/_menu"/>
 
-<h1>Login page</h1>
-</br>
-<div th:if="${param.error}">
-    Invalid username and password.
+<div class="p-3 mb-2 bg-light text-dark text-center">
+    <h1>Login page</h1>
+    </br>
+    <div th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+    <form method="post" th:action="@{/login}">
+        <div><label> Username: <input name="username" type="text"/> </label></div>
+        <div><label> Password : <input name="password" type="password"/> </label></div>
+        <div><input class="btn btn-info btn-lg" type="submit" value="Sign In"/></div>
+    </form>
+    <br/>
+    <p>Not a member yet?</p>
+    <p class="lead">
+        <a class="btn btn-info btn-sm" href="http://localhost:8080/users/add">Sign up</a>
+    </p>
 </div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<form method="post" th:action="@{/login}">
-    <div><label> User Name : <input name="username" type="text"/> </label></div>
-    <div><label> Password: <input name="password" type="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
-<br/>
-<p>Not a member yet?</p>
-<p class="lead">
-    <a class="btn btn-primary btn-lg" href="http://localhost:8080/users/add">Sign up</a>
-</p>
 </body>
 </html>

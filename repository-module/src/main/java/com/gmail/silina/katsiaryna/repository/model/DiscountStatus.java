@@ -24,7 +24,7 @@ public class DiscountStatus {
     private Integer id;
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
-    private DiscountStatusEnum discountStatusEnum;
+    private DiscountStatusEnum discountStatus;
     @Column(name = "DISCOUNT")
     @Min(value = 0)
     @Max(value = 100)
@@ -41,14 +41,14 @@ public class DiscountStatus {
         DiscountStatus that = (DiscountStatus) o;
 
         if (!Objects.equals(id, that.id)) return false;
-        if (discountStatusEnum != that.discountStatusEnum) return false;
+        if (discountStatus != that.discountStatus) return false;
         return Objects.equals(discount, that.discount);
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (discountStatusEnum != null ? discountStatusEnum.hashCode() : 0);
+        result = 31 * result + (discountStatus != null ? discountStatus.hashCode() : 0);
         result = 31 * result + (discount != null ? discount.hashCode() : 0);
         return result;
     }

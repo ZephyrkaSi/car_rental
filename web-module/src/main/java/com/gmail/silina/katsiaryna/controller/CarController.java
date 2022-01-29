@@ -10,15 +10,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.gmail.silina.katsiaryna.constant.HandlerConstants.CARS_URL;
+
 @Controller
-@RequestMapping("/cars")
+@RequestMapping(CARS_URL)
 @AllArgsConstructor
 public class CarController {
     private final CarService carService;
     private final CarStatusService carStatusService;
 
     @GetMapping
-    public String getAllOrders(Model model) {
+    public String getAllCars(Model model) {
         model.addAttribute("cars", carService.getAllCarDTOs());
         return "cars";
     }

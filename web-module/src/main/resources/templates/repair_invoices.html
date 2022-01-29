@@ -19,7 +19,7 @@
 
 <div class="container">
 
-    <h3>Repair Invoices</h3>
+    <h3 class="text-danger">Repair Invoices</h3>
 
     <hr/>
     <a class="btn btn-primary" th:href="@{/invoices/form}">Add Repair Invoice</a>
@@ -47,7 +47,7 @@
         <tbody>
         <tr th:each="invoice: ${repairInvoices}">
             <td th:text="${invoice.id}"></td>
-            <td th:text="${invoice.date}"></td>
+            <td th:text="${#temporals.format(invoice.date, 'HH/MM/YYYY hh:mm')}"></td>
             <td th:text="${invoice.client.userDetails.firstName}"></td>
             <td th:text="${invoice.client.userDetails.lastName}"></td>
             <td th:text="${invoice.client.userDetails.passportData}"></td>

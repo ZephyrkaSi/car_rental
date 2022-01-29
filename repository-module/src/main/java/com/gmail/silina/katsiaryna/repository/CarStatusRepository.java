@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CarStatusRepository extends JpaRepository<CarStatus, Long> {
-    @Query("SELECT cs FROM CarStatus cs WHERE cs.carStatusEnum = :status")
+    @Query("SELECT cs FROM CarStatus cs WHERE cs.carStatus = :status")
     CarStatus findByStatus(@Param("status") CarStatusEnum status);
 }

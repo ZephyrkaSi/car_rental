@@ -22,4 +22,8 @@ public enum OrderStatusEnum {
                 .filter(el -> el.getStatus().equals(status))
                 .findFirst().orElse(null);
     }
+
+    public static OrderStatusEnum findByEnumName(String orderStatusEnumName) {
+        return OrderStatusEnum.valueOf(orderStatusEnumName);
+    }
 }

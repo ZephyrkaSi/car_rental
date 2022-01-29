@@ -8,46 +8,48 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"/>
 
-<h1>Order</h1>
+<div class="text-center">
+    <h1>Order</h1>
+    </br>
 
-<form th:action="@{/orders/form}" th:method="POST">
-    <div th:object="${order}">
-        <label for="beginDate">From:</label>
-        <input id="beginDate" required="required" th:field="*{dateAndTimeFrom}"
-               th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
-               type="datetime-local">
+    <form th:action="@{/orders/form}" th:method="POST">
+        <div th:object="${order}">
+            <label for="beginDate">From:</label>
+            <input id="beginDate" required="required" th:field="*{dateAndTimeFrom}"
+                   th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+                   type="datetime-local">
 
-        <!-- ${#dates.format(date, #messages.msg('app.dateformat'))} -->
-        <label for="endDate">To:</label>
-        <input id="endDate" required="required" th:field="*{dateAndTimeTo}"
-               th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
-               type="datetime-local">
+            <!-- ${#dates.format(date, #messages.msg('app.dateformat'))} -->
+            <label for="endDate">To:</label>
+            <input id="endDate" required="required" th:field="*{dateAndTimeTo}"
+                   th:min="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd''T''HH:mm')}"
+                   type="datetime-local">
 
-        <br/>
-        <br/>
+            <br/>
+            <br/>
 
-        <label for="carModel">Car model:</label>
-        <select id="carModel" required="required" th:field="*{carModel}">
-            <option value="">Choose car model</option>
-            <option th:each="model : ${carModels}"
-                    th:text="${model.getBrandName()} + ' ' + ${model.getModel()}"
-                    th:value="${model.id}"></option>
-        </select>
+            <label for="carModel">Car model:</label>
+            <select id="carModel" required="required" th:field="*{carModel}">
+                <option value="">Choose car model</option>
+                <option th:each="model : ${carModels}"
+                        th:text="${model.getBrandName()} + ' ' + ${model.getModel()}"
+                        th:value="${model.id}"></option>
+            </select>
 
-        <br/>
-        <br/>
+            <br/>
+            <br/>
 
-        <input type="submit">
+            <input class="btn btn-primary btn-lg" type="submit" value="Create order">
 
-        <div style="color: red" th:if="${#fields.hasGlobalErrors()}">
-            <p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p>
+            <div style="color: red" th:if="${#fields.hasGlobalErrors()}">
+                <p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p>
+            </div>
+
+            <div style="color: red" th:if="${#fields.hasErrors()}">
+                <pre><p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p></pre>
+            </div>
         </div>
-
-        <div style="color: red" th:if="${#fields.hasErrors()}">
-            <pre><p class="error" th:each="err : ${#fields.errors()}" th:text="${err}"></p></pre>
-        </div>
-    </div>
-</form>
-
+    </form>
+</div>
 </body>
 </html>

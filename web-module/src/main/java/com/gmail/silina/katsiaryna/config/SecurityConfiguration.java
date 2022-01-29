@@ -35,8 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/users/add", "/users/registration").permitAll()
                 //.anyRequest().authenticated()
 
-                .antMatchers("/orders/api/all", "orders/list", "/saveOrder", "/showUpdateForm",
-                        "/users", "/invoices/*")
+                .antMatchers("/orders", "orders/list", "/saveOrder", "/showUpdateForm",
+                        "/users", "/invoices/*", "/cars/*")
                 .hasAuthority(RoleEnum.ADMIN.name())
 
                 .antMatchers("/orders/add", "/orders/form",
@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                                 User user = (User) authentication.getPrincipal();
                                 userService.changeLastLogin(user.getId());
-                                
+
                                 httpServletResponse.sendRedirect(httpServletRequest.getContextPath());
                             }
                         }

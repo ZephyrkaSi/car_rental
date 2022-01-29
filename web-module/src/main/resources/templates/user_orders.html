@@ -47,26 +47,21 @@
             <td th:text="${order.carModel.getBrandName()}"></td>
             <td th:text="${order.carModel.getModel()}"></td>
             <td th:text="${order.car.getStateNumber()}"></td>
-            <td th:text="${order.getOrderStatus().getOrderStatus()}"></td>
+            <td th:text="${order.getOrderStatus().description}"></td>
             <td th:text="${order.getDeclineReason()}"></td>
 
             <td>
                 <a class="btn btn-primary" th:href="@{/users/myOrders/pay(orderId=${order.id})}"
-                   th:if="${order.getOrderStatus().getOrderStatus()} == ${'WAITING FOR PAYMENT'}">
+                   th:if="${order.orderStatus.id} == 1">
                     Pay
                 </a>
                 <br/><br/>
                 <a class="btn btn-outline-danger" th:href="@{/users/myOrders/decline(orderId=${order.id})}"
-                   th:if="${order.getOrderStatus().getOrderStatus()} == ${'WAITING FOR PAYMENT'}">
+                   th:if="${order.orderStatus.id} == 2">
                     Decline order
                 </a>
 
             </td>
-
-            <!--<td>
-                <a class="btn btn-info" th:href="@{/users/myOrders/pay(orderId=${order.id})}"
-                   th:if="${order.getOrderStatus().getOrderStatus()} == ${'WAITING FOR PAYMENT'}">Pay</a>
-            </td>-->
         </tr>
         </tbody>
 
