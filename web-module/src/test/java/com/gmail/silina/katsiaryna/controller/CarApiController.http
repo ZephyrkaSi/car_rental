@@ -1,3 +1,13 @@
+### login
+POST http://localhost:8080/login
+Content-Type: application/x-www-form-urlencoded
+
+username=user2&password=11111111
+
+### logout
+POST http://localhost:8080/logout
+Content-Type: application/x-www-form-urlencoded
+
 ### GET all cars with default pageble values (size=3, page=0)
 GET http://localhost:8080/api/cars
 Accept: application/json

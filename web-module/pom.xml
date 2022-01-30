@@ -3,12 +3,12 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>com.gmail.silina.katsiaryna.web</groupId>
+    <groupId>by.itacademy.javaenterprise.carrental.silina.web</groupId>
     <artifactId>web-module</artifactId>
     <version>1.0-SNAPSHOT</version>
     <parent>
         <artifactId>car_rental_project</artifactId>
-        <groupId>com.gmail.silina.katsiaryna</groupId>
+        <groupId>by.itacademy.javaenterprise.carrental.silina</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -48,7 +48,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.gmail.silina.katsiaryna.service</groupId>
+            <groupId>by.itacademy.javaenterprise.carrental.silina.service</groupId>
             <artifactId>service-module</artifactId>
             <version>${parent.version}</version>
         </dependency>
