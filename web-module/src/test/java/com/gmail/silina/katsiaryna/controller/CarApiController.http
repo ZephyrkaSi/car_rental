@@ -13,3 +13,19 @@ Accept: application/json
 ### GET car with id=7 (Exception expected)
 GET http://localhost:8080/api/cars/7
 Accept: application/json
+
+### Update car status with id=1
+PUT http://localhost:8080/api/cars/1
+Content-Type: application/json
+
+{
+  "stateNumber": "1234TX-7"
+}
+
+### Update car status with id=1 (Exception expected cause has no field "stateNumber")
+PUT http://localhost:8080/api/cars/1
+Content-Type: application/json
+
+{
+  "st": "1234TX-7"
+}
