@@ -20,6 +20,7 @@
         <jakarta.validation-api.version>3.0.0</jakarta.validation-api.version>
         <hibernate-validator.version>7.0.2.Final</hibernate-validator.version>
         <mysql-connector-java.version>8.0.27</mysql-connector-java.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
     </properties>
 
     <dependencies>
@@ -47,7 +48,12 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>${jakarta.validation-api.version}</version>
         </dependency>
-        
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>

@@ -10,6 +10,8 @@ import com.gmail.silina.katsiaryna.service.dto.PageDTO;
 import com.gmail.silina.katsiaryna.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.internal.util.Assert;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -88,5 +90,15 @@ public class CarServiceImpl implements CarService {
         car.setCarStatus(carStatus);
         log.info("Changing car status with id {}", carId);
         carRepository.save(car);
+    }
+
+    @Override
+    public CarDTO updateStateNumber(Long carId, String stateNumber) {
+        Assert.isTrue(StringUtils.isNotBlank(stateNumber), "The given state number must not be null!");
+        var car = getCarById(carId);
+        car.setStateNumber(stateNumber);
+        log.info("Changing car state number with id {}", carId);
+        carRepository.save(car);
+        return convertService.getDTOFromObject(car, CarDTO.class);
     }
 }

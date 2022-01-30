@@ -23,4 +23,6 @@ public interface CarService {
     List<Car> getAvailableCars(Long carModelId, LocalDateTime begin, LocalDateTime end);
 
     void updateCarStatusFrom(CarDTO carDTO);
+
+    CarDTO updateStateNumber(Long carId, String stateNumber);
 }
