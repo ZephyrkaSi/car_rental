@@ -15,7 +15,7 @@
 
     <a th:href="@{/}">Home |</a>
 
-    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/form}">Order a car |</a>
 
     <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
 
@@ -52,7 +52,7 @@
     <br/>
     <p>Not a member yet?</p>
     <p class="lead">
-        <a class="btn btn-info btn-sm" href="http://localhost:8080/users/add">Sign up</a>
+        <a class="btn btn-info btn-sm" href="http://localhost:8080/users/registration">Sign up</a>
     </p>
 </div>
 </body>

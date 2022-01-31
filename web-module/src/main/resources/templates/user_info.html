@@ -16,7 +16,7 @@
 
     <a th:href="@{/}">Home |</a>
 
-    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/form}">Order a car |</a>
 
     <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
 
@@ -57,7 +57,7 @@
 
 
     <a class="btn btn-info" th:href="@{/users/changeUserInfo(userId=${user.id})}">Change user info</a>
-    <a class="btn btn-info" th:href="@{/users/changePassword(userId=${user.id})}">Change password</a>
+    <a class="btn btn-info" th:href="@{/users/password/form(userId=${user.id})}">Change password</a>
     <a class="btn btn-danger ml-2" th:href="@{/users/delete(userId=${user.id})}">Delete account</a>
 </div>
 

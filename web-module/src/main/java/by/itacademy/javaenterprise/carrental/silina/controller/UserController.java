@@ -39,7 +39,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/showUpdateForm")
+    @GetMapping("/updateform")
     public String showUpdateForm(@RequestParam Long userId, Model model) {
         var userDTO = userService.getUserDTOById(userId);
         model.addAttribute("user", userDTO);
@@ -47,7 +47,7 @@ public class UserController {
         return "update_user_form";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/registration")
     public String redirectToAddUser(@ModelAttribute("user") User user,
                                     @ModelAttribute("userDetails") UserDetails userDetails) {
         return "user_registration";
@@ -83,7 +83,7 @@ public class UserController {
         return "user_info_change_form";
     }
 
-    @PostMapping("/saveChanges")
+    @PostMapping("/")
     public String updateUserInfo(@RequestBody @ModelAttribute("userDetails") @Valid UserDetailsDTO userDetailsDTO,
                                  BindingResult resultUserDetailsDTO) {
         if (resultUserDetailsDTO.hasErrors()) {
@@ -94,7 +94,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/changePassword")
+    @GetMapping("/password/form")
     public String changeUserPassword(@RequestParam Long userId, Model model) {
         var userDTO = userService.getUserDTOById(userId);
         userDTO.setPassword("");
@@ -102,7 +102,7 @@ public class UserController {
         return "user_password_change_form";
     }
 
-    @PostMapping("/saveNewPassword")
+    @PostMapping("/password/form")
     public String updateUserInfo(@RequestBody @ModelAttribute("user") @Valid UserDTO userDTO,
                                  BindingResult resultUserDTO) {
         if (resultUserDTO.hasErrors()) {
@@ -132,13 +132,13 @@ public class UserController {
         return "user_orders";
     }
 
-    @GetMapping("/myOrders/pay")
+    @GetMapping("/payment")
     public String payForOrder(@RequestParam Long orderId) {
         orderService.changeOrderStatusFromWaitingForPaymentToPaid(orderId);
         return "redirect:/users/userOrders";
     }
 
-    @GetMapping("/myOrders/decline")
+    @GetMapping("/decline")
     public String declineOrder(@RequestParam Long orderId) {
         orderService.changeOrderStatusFromWaitingForPaymentToCanceledByClient(orderId);
         return "redirect:/users/userOrders";
