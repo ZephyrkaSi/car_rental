@@ -25,7 +25,7 @@ public class CarController {
         return "cars";
     }
 
-    @GetMapping("/changeCarStatusForm")
+    @GetMapping("/status/form")
     public String updateCarStatusForm(@RequestParam Long carId, Model model) {
         var carDTO = carService.getCarDTOById(carId);
         model.addAttribute("car", carDTO);
@@ -33,7 +33,7 @@ public class CarController {
         return "update_car_status_form";
     }
 
-    @PostMapping("/changeCarStatus")
+    @PostMapping("/status/form")
     public String saveChangedCarStatus(@ModelAttribute @Valid CarDTO carDTO) {
         carService.updateCarStatusFrom(carDTO);
         return "redirect:/cars";

@@ -11,7 +11,7 @@
 
     <a th:href="@{/}">Home |</a>
 
-    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/form}">Order a car |</a>
 
     <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
 
@@ -34,7 +34,7 @@
 <div class="text-center">
     <h1 class="text-danger">Repair invoice</h1>
     <br/>
-    <form th:action="@{/invoices/add}" th:method="POST">
+    <form th:action="@{/invoices/form}" th:method="POST">
         <div th:object="${repairInvoice}">
             <label for="client">Client:</label>
             <select id="client" required="required" th:field="*{client.id}">

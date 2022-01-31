@@ -17,7 +17,7 @@
 
     <a th:href="@{/}">Home |</a>
 
-    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/form}">Order a car |</a>
 
     <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
 
@@ -50,7 +50,7 @@
     <hr class="my-4">
     <p>Let's find a geat deal for your rental car.</p>
     <p class="lead">
-        <a class="btn btn-primary btn-lg" href="http://localhost:8080/orders/add" role="button">Order a car</a>
+        <a class="btn btn-primary btn-lg" href="http://localhost:8080/orders/form" role="button">Order a car</a>
     </p>
 </div>
 </body>

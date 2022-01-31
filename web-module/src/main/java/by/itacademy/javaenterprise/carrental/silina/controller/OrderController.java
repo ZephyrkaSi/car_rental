@@ -33,26 +33,26 @@ public class OrderController {
         return "orders";
     }
 
-    @GetMapping("/addOrderForm")
+    @GetMapping("/status/form")
     public String addOrderForm(@ModelAttribute("order") OrderDTO orderDTO) {
-        return "update_order_form";
+        return "/update_order_status_form";
     }
 
-    @PostMapping("/saveOrder")
+    @PostMapping("/status/form")
     public String saveOrder(@ModelAttribute OrderDTO orderDTO) {
         orderService.updateOrderStatusAndDeclineReasonFrom(orderDTO);
         return "redirect:/orders";
     }
 
-    @GetMapping("/showUpdateForm")
+    @GetMapping("/statuses/form")
     public String showUpdateForm(@RequestParam Long orderId, Model model) {
         var orderDTO = orderService.getOrderDTOById(orderId);
         model.addAttribute("order", orderDTO);
         model.addAttribute("orderStatuses", orderStatusService.getEligibleStatusesForOrder(orderDTO));
-        return "update_order_form";
+        return "/update_order_status_form";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/form")
     public String redirectToOrderForm(@ModelAttribute("order") OrderFormDTO orderFormDTO,
                                       Model model) {
         model.addAttribute("carModels", carModelService.getAll());

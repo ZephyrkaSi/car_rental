@@ -15,7 +15,7 @@
     <h3>Change car <span th:utext="${car.id}"/> status</h3>
     <hr/>
 
-    <form method="POST" th:action="@{/cars/changeCarStatus}" th:object="${car}">
+    <form method="POST" th:action="@{/cars/status/form}" th:object="${car}">
 
         <h5>Current car status: <span th:utext="${car.carStatus.carStatus}"/></h5>
         <br/>

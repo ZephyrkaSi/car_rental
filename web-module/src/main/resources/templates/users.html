@@ -19,7 +19,7 @@
 
     <a th:href="@{/}">Home |</a>
 
-    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/form}">Order a car |</a>
 
     <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
 
@@ -70,7 +70,7 @@
             <td th:text="${user.enabled}"></td>
             <td th:text="${#temporals.format(user.lastLogin, 'HH/MM/YYYY hh:mm')}"></td>
             <td>
-                <a class="btn btn-info" th:href="@{/users/showUpdateForm(userId=${user.id})}">Update</a>
+                <a class="btn btn-info" th:href="@{/users/updateform(userId=${user.id})}">Update</a>
             </td>
         </tr>
         </tbody>

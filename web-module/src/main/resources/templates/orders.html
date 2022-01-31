@@ -19,7 +19,7 @@
 
     <a th:href="@{/}">Home |</a>
 
-    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/form}">Order a car |</a>
 
     <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
 
@@ -79,7 +79,7 @@
             <td th:text="${order.getDeclineReason()}"></td>
 
             <td>
-                <a class="btn btn-info" th:href="@{/orders/showUpdateForm(orderId=${order.id})}"
+                <a class="btn btn-info" th:href="@{/orders/statuses/form(orderId=${order.id})}"
                    th:if="
                    ${order.getOrderStatus().getOrderStatus()} != ${'DECLINED BY ADMIN'} and
                    ${order.getOrderStatus().getOrderStatus()} != ${'CANCELED BY CLIENT'}">

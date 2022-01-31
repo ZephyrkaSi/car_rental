@@ -39,7 +39,7 @@ public class RepairInvoiceController {
         return "repair_invoice_form";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/form")
     public String saveRepairInvoice(@RequestBody @ModelAttribute("repairInvoice") @Valid RepairInvoiceDTO repairInvoiceDTO,
                                     BindingResult resultRepairInvoice) {
         if (resultRepairInvoice.hasErrors()) {

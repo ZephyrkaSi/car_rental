@@ -32,13 +32,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/users/add", "/users/registration").permitAll()
+                .antMatchers("/", "/users/registration", "/users/registration").permitAll()
 
-                .antMatchers("/orders", "orders/list", "/saveOrder", "/showUpdateForm",
+                .antMatchers("/orders", "orders/list", "/form", "/updateform",
                         "/users", "/invoices/*", "/cars/*", "/api/cars/*", "/api/cars")
                 .hasAuthority(RoleEnum.ADMIN.name())
 
-                .antMatchers("/orders/add", "/orders/form",
+                .antMatchers("/orders/form", "/orders/form",
                         "/users/userInfo")
                 .hasAuthority(RoleEnum.CLIENT.name())
 
@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/users/add", "/users/registration").permitAll()
+                .antMatchers("/", "/users/form", "/users/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()

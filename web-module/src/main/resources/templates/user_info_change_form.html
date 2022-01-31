@@ -17,7 +17,7 @@
 
     <a th:href="@{/}">Home |</a>
 
-    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/form}">Order a car |</a>
 
     <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
 
@@ -43,7 +43,7 @@
 
     <br/><br/>
 
-    <form th:action="@{/users/saveChanges}" th:method="POST">
+    <form th:action="@{/users/}" th:method="POST">
 
         <div th:object="${userDetails}">
 

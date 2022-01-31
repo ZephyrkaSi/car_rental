@@ -19,7 +19,7 @@
 
     <a th:href="@{/}">Home |</a>
 
-    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/form}">Order a car |</a>
 
     <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
 
@@ -73,13 +73,13 @@
             <td th:text="${order.getDeclineReason()}"></td>
 
             <td>
-                <a class="btn btn-primary" th:href="@{/users/myOrders/pay(orderId=${order.id})}"
+                <a class="btn btn-primary" th:href="@{/users/payment(orderId=${order.id})}"
                    th:if="${order.orderStatus.id} == 1">
                     Pay
                 </a>
                 <br/><br/>
-                <a class="btn btn-outline-danger" th:href="@{/users/myOrders/decline(orderId=${order.id})}"
-                   th:if="${order.orderStatus.id} == 2">
+                <a class="btn btn-outline-danger" th:href="@{/users/decline(orderId=${order.id})}"
+                   th:if="${order.orderStatus.id} == 1">
                     Decline order
                 </a>
 
