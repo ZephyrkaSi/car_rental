@@ -1,4 +1,4 @@
-package by.itacademy.javaenterprise.carrental.silina.service.impl;
+package by.itacademy.javaenterprise.carrental.silina.service.impl.integration.test;
 
 import by.itacademy.javaenterprise.carrental.silina.config.AppConfig;
 import by.itacademy.javaenterprise.carrental.silina.repository.CarRepository;
@@ -49,12 +49,14 @@ class RepairInvoiceServiceImplTest {
     @MockBean
     private UserService userService;
 
-    //todo why compare only size?
     @Test
     void getAllRepairInvoiceDTOs() {
         var expectedInvoices = repairInvoiceRepository.findAll();
         var actualInvoiceDTOs = repairInvoiceService.getAllRepairInvoiceDTOs();
         Assertions.assertEquals(expectedInvoices.size(), actualInvoiceDTOs.size());
+
+        var expectedInvoiceDTOs = convertService.getDTOsFromObjectList(expectedInvoices, RepairInvoiceDTO.class);
+        Assertions.assertEquals(expectedInvoiceDTOs, actualInvoiceDTOs);
     }
 
     @Test

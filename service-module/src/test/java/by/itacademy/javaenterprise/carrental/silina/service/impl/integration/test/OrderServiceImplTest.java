@@ -1,4 +1,4 @@
-package by.itacademy.javaenterprise.carrental.silina.service.impl;
+package by.itacademy.javaenterprise.carrental.silina.service.impl.integration.test;
 
 import by.itacademy.javaenterprise.carrental.silina.config.AppConfig;
 import by.itacademy.javaenterprise.carrental.silina.repository.CarModelRepository;
@@ -153,7 +153,6 @@ class OrderServiceImplTest {
     @Test
     void addOrder() {
         OrderFormDTO orderFormDTO = new OrderFormDTO();
-        //todo maggic numbers . NOT ONLY IN THIS TEST
         var carModel = carModelRepository.findById(4L).get();
         orderFormDTO.setCarModel(carModel);
         orderFormDTO.setDateAndTimeFrom(LocalDateTime.of(2017, Month.JULY, 9, 11, 10, 0));
@@ -204,7 +203,8 @@ class OrderServiceImplTest {
 
             orderService.changeOrderStatusFromWaitingForPaymentToCanceledByClient(orderId);
 
-            var changedOrderStatusEnum = order.getOrderStatus().getOrderStatus();
+            var orderAfterUpdate = orderRepository.findById(orderId).get();
+            var changedOrderStatusEnum = orderAfterUpdate.getOrderStatus().getOrderStatus();
             Assertions.assertEquals(OrderStatusEnum.CANCELED_BY_CLIENT, changedOrderStatusEnum);
         } else {
             var serviceException = Assertions.assertThrows(Exception.class, () -> {

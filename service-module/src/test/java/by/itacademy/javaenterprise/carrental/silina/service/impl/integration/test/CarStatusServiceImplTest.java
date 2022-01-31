@@ -1,10 +1,11 @@
-package by.itacademy.javaenterprise.carrental.silina.service.impl;
+package by.itacademy.javaenterprise.carrental.silina.service.impl.integration.test;
 
 import by.itacademy.javaenterprise.carrental.silina.config.AppConfig;
-import by.itacademy.javaenterprise.carrental.silina.repository.RoleRepository;
+import by.itacademy.javaenterprise.carrental.silina.repository.CarStatusRepository;
+import by.itacademy.javaenterprise.carrental.silina.repository.model.CarStatus;
+import by.itacademy.javaenterprise.carrental.silina.service.CarStatusService;
 import by.itacademy.javaenterprise.carrental.silina.service.ConvertService;
-import by.itacademy.javaenterprise.carrental.silina.service.RoleService;
-import by.itacademy.javaenterprise.carrental.silina.service.dto.RoleDTO;
+import by.itacademy.javaenterprise.carrental.silina.service.dto.CarStatusDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -30,52 +32,50 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 @EntityScan("by.itacademy.javaenterprise.carrental.silina.repository.model")
 @TestPropertySource(locations = {"classpath:application.properties"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class RoleServiceImplTest {
+class CarStatusServiceImplTest {
     @Autowired
-    private RoleService roleService;
+    private CarStatusService carStatusService;
     @Autowired
-    private RoleRepository roleRepository;
+    private CarStatusRepository carStatusRepository;
     @Autowired
     private ConvertService convertService;
 
-
-    static Stream<Arguments> createRoleIdVariety() {
+    static Stream<Arguments> createCarStatusIdVariety() {
         return Stream.of(
-                //Long orderId, boolean expectRoleInDB
+                //Long carId, boolean expectCarStatusInDB
                 arguments(1L, true),
-                arguments(2L, true),
                 arguments(20L, false),
                 arguments(null, false)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("createRoleIdVariety")
-    void getRoleById(Long roleId, boolean expectRoleInDB) {
-        if (expectRoleInDB) {
-            var actualRole = roleService.getRoleById(roleId);
-            Assertions.assertNotNull(actualRole);
+    @MethodSource("createCarStatusIdVariety")
+    void getCarStatusById(Long carStatusId, boolean expectCarStatusInDB) {
+        if (expectCarStatusInDB) {
+            var actualCarStatus = carStatusService.getCarStatusById(carStatusId);
+            Assertions.assertNotNull(actualCarStatus);
 
-            var expectedRole = roleRepository.findById(roleId).get();
-            Assertions.assertEquals(expectedRole, actualRole);
+            var expectedCarStatus = carStatusRepository.findById(carStatusId).get();
+            Assertions.assertEquals(expectedCarStatus, actualCarStatus);
         } else {
             var serviceException = Assertions.assertThrows(Exception.class, () -> {
-                roleService.getRoleById(roleId);
+                carStatusService.getCarStatusById(carStatusId);
             });
 
-            if (roleId == null) {
-                Assertions.assertEquals("Role id cannot be null", serviceException.getMessage());
+            if (carStatusId == null) {
+                Assertions.assertEquals("Car status id cannot be null", serviceException.getMessage());
             } else {
-                Assertions.assertEquals("Role with id " + roleId + " doesn't exist", serviceException.getMessage());
+                Assertions.assertEquals("Car status with id " + carStatusId + " doesn't exist", serviceException.getMessage());
             }
         }
     }
 
     @Test
-    void getAllRoleDTOs() {
-        var roles = roleRepository.findAll();
-        var expectedRoleDTOs = convertService.getDTOsFromObjectList(roles, RoleDTO.class);
-        var resultRoleDTOs = roleService.getAllRoleDTOs();
-        Assertions.assertEquals(expectedRoleDTOs, resultRoleDTOs);
+    void getAllCarStatusDTOs() {
+        List<CarStatus> carStatuses = carStatusRepository.findAll();
+        List<CarStatusDTO> expectedCarStatusDTOs = convertService.getDTOsFromObjectList(carStatuses, CarStatusDTO.class);
+        List<CarStatusDTO> resultCarStatusDTOs = carStatusService.getAllCarStatusDTOs();
+        Assertions.assertEquals(expectedCarStatusDTOs, resultCarStatusDTOs);
     }
 }

@@ -14,8 +14,30 @@
 
 <body>
 
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"/>
+<div style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;"
+     xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <a th:href="@{/}">Home |</a>
+
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/orders/add}">Order a car |</a>
+
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userInfo}">User Info |</a>
+
+    <a sec:authorize="hasAuthority('CLIENT')" th:href="@{/users/userOrders}">My orders |</a>
+
+    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/orders}">All orders |</a>
+
+    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/users}">All users |</a>
+
+    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/cars}">All cars |</a>
+
+    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/invoices}">Repair invoices |</a>
+
+    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+
+    <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
+
+</div>
 
 <div class="container">
 

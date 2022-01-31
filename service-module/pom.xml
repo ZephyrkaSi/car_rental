@@ -28,6 +28,12 @@
             <groupId>by.itacademy.javaenterprise.carrental.silina.repository</groupId>
             <artifactId>repository-module</artifactId>
             <version>${parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>liquibase-core</artifactId>
+                    <groupId>org.liquibase</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>

@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
     public void changeOrderStatusFromWaitingForPaymentToCanceledByClient(Long orderId) {
         var order = getOrderById(orderId);
         var status = order.getOrderStatus();
-        if (status.getOrderStatus().equals(OrderStatusEnum.PAID)) {
+        if (status.getOrderStatus().equals(OrderStatusEnum.WAITING_FOR_PAYMENT)) {
             order.setOrderStatus(orderStatusService.getOrderStatus(OrderStatusEnum.CANCELED_BY_CLIENT));
             log.info("Changing order status with id {}", orderId);
             orderRepository.save(order);

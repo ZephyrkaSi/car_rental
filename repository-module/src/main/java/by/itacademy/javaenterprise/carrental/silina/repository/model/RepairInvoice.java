@@ -38,7 +38,6 @@ public class RepairInvoice {
     private User admin;
     @Column(name = "ADD_INFO")
     private String addInfo;
-    //TODO ?
     @Column(name = "IS_PAID")
     private boolean isPaid;
 }

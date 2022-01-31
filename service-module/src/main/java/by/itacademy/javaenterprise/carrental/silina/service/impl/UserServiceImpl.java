@@ -29,7 +29,6 @@ import static by.itacademy.javaenterprise.carrental.silina.service.constant.Serv
 @Slf4j
 @AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
-    //private final RoleService roleService;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -104,10 +103,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void deleteUserById(Long id) {
-        //TODO log
         try {
             userRepository.deleteById(id);
-            log.info("");
+            log.info("User with id {} has been deleted", id);
         } catch (ServiceException e) {
             throw new ServiceException(String.format("User with id %s doesn't exist", id));
         }
@@ -119,7 +117,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new ServiceException("There is user with that email address:" + user.getEmail());
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        //TODO use roleService
         Role clientRole = roleRepository.findByName(RoleEnum.CLIENT);
         user.setRole(clientRole);
         userRepository.save(user);

@@ -1,4 +1,4 @@
-package by.itacademy.javaenterprise.carrental.silina.service.impl;
+package by.itacademy.javaenterprise.carrental.silina.service.impl.integration.test;
 
 import by.itacademy.javaenterprise.carrental.silina.config.AppConfig;
 import by.itacademy.javaenterprise.carrental.silina.repository.UserDetailsRepository;
@@ -105,7 +105,6 @@ class UserDetailsServiceImplTest {
         userDetails.setDiscountStatus(null);
         var initialDiscountStatus = userDetails.getDiscountStatus();
         userDetailsService.add(userDetails);
-        //todo would be nice to see which statuses are you comparing. Actual names
         var resultDiscountStatus = userDetails.getDiscountStatus();
         Assertions.assertNotEquals(initialDiscountStatus, resultDiscountStatus);
     }
@@ -117,21 +116,27 @@ class UserDetailsServiceImplTest {
         var initialLastName = initialUserDetails.getLastName();
         var initialPassportData = initialUserDetails.getPassportData();
         var userDetailsDTO = convertService.getDTOFromObject(initialUserDetails, UserDetailsDTO.class);
-        //todo where is the comparison of modified userdetails with these values?
-        userDetailsDTO.setFirstName("Fname");
-        userDetailsDTO.setLastName("Lname");
-        userDetailsDTO.setPassportData("P2919");
+
+        var firstNameToChane = "Fname";
+        userDetailsDTO.setFirstName(firstNameToChane);
+        var lastNameToChange = "Lname";
+        userDetailsDTO.setLastName(lastNameToChange);
+        var passportDataToChane = "P2919";
+        userDetailsDTO.setPassportData(passportDataToChane);
 
         userDetailsService.changeUserDetailsFrom(userDetailsDTO);
 
         var changedUserDetails = userDetailsRepository.findById(1L).get();
         var changedFirstName = changedUserDetails.getFirstName();
         Assertions.assertNotEquals(initialFirstName, changedFirstName);
+        Assertions.assertEquals(firstNameToChane, changedFirstName);
 
         var changedLastName = changedUserDetails.getLastName();
         Assertions.assertNotEquals(initialLastName, changedLastName);
+        Assertions.assertEquals(lastNameToChange, changedLastName);
 
         var changedPassportData = changedUserDetails.getPassportData();
         Assertions.assertNotEquals(initialPassportData, changedPassportData);
+        Assertions.assertEquals(passportDataToChane, changedPassportData);
     }
 }

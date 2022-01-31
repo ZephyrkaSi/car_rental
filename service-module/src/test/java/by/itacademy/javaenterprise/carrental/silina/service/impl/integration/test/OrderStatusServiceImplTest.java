@@ -1,4 +1,4 @@
-package by.itacademy.javaenterprise.carrental.silina.service.impl;
+package by.itacademy.javaenterprise.carrental.silina.service.impl.integration.test;
 
 import by.itacademy.javaenterprise.carrental.silina.config.AppConfig;
 import by.itacademy.javaenterprise.carrental.silina.repository.OrderStatusRepository;
@@ -84,7 +84,7 @@ class OrderStatusServiceImplTest {
         Assertions.assertEquals(expectedNumberOfStatuses, actualNumberOfStatuses);
     }
 
-    //todo ?
+    //todo
     @Test
     void getEligibleStatusesForOrder() {
     }

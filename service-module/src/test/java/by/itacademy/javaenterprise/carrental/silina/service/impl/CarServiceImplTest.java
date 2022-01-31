@@ -1,163 +1,137 @@
 package by.itacademy.javaenterprise.carrental.silina.service.impl;
 
-import by.itacademy.javaenterprise.carrental.silina.config.AppConfig;
 import by.itacademy.javaenterprise.carrental.silina.repository.CarRepository;
-import by.itacademy.javaenterprise.carrental.silina.repository.CarStatusRepository;
+import by.itacademy.javaenterprise.carrental.silina.repository.model.Car;
+import by.itacademy.javaenterprise.carrental.silina.repository.model.CarModel;
+import by.itacademy.javaenterprise.carrental.silina.repository.model.CarStatus;
+import by.itacademy.javaenterprise.carrental.silina.repository.model.CarStatusEnum;
 import by.itacademy.javaenterprise.carrental.silina.service.CarService;
+import by.itacademy.javaenterprise.carrental.silina.service.CarStatusService;
 import by.itacademy.javaenterprise.carrental.silina.service.ConvertService;
 import by.itacademy.javaenterprise.carrental.silina.service.dto.CarDTO;
+import by.itacademy.javaenterprise.carrental.silina.service.dto.CarModelDTO;
 import by.itacademy.javaenterprise.carrental.silina.service.dto.CarStatusDTO;
-import by.itacademy.javaenterprise.carrental.silina.service.exception.ServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.stream.Stream;
+import java.util.Optional;
 
-import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.Mockito.when;
 
-@DataJpaTest
-@Sql(scripts = {"classpath:/schema.sql", "/data.sql"})
-@ContextConfiguration(classes = {AppConfig.class, IntegrationConfig.class})
-@EnableJpaRepositories(basePackages = {"by.itacademy.javaenterprise.carrental.silina.repository"})
-@EntityScan("by.itacademy.javaenterprise.carrental.silina.repository.model")
-@TestPropertySource(locations = {"classpath:application.properties"})
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ExtendWith({MockitoExtension.class, SpringExtension.class})
+@ContextConfiguration(classes = {CarServiceImpl.class})
 class CarServiceImplTest {
-    private final CarDTO carDTO = new CarDTO();
-    private final CarStatusDTO carStatusDTO = new CarStatusDTO();
-    @Autowired
-    private CarService carService;
-    @Autowired
+    @MockBean
     private CarRepository carRepository;
     @Autowired
-    private CarStatusRepository carStatusRepository;
-    @Autowired
-    private ConvertService convertService;
+    private CarService carService;
 
-    static Stream<Arguments> createCarIdVariety() {
-        return Stream.of(
-                //Long carId, boolean expectCarInDB
-                arguments(1L, true),
-                arguments(20L, false),
-                arguments(null, false)
-        );
+    @Test
+    void getCarById() {
+        Long carId = 1L;
+
+        CarStatus carStatus = new CarStatus();
+        carStatus.setId(carId);
+        carStatus.setCarStatus(CarStatusEnum.READY);
+
+        CarModel carModel = new CarModel();
+        carModel.setId(1L);
+        carModel.setModel("Model");
+        carModel.setBodyColor("Colour");
+        carModel.setBodyType("Type");
+        carModel.setBrandName("Brand");
+        carModel.setEngineVolume(1.6);
+        carModel.setInteriorColor("Colour");
+        carModel.setFuelType("Type");
+        carModel.setPricePerMinute(2);
+        carModel.setTransmission("Transmission");
+
+        Car car = new Car();
+        car.setId(carId);
+        car.setStateNumber("1234SN-7");
+        car.setCarStatus(carStatus);
+        car.setCarModel(carModel);
+        when(carRepository.findById(carId)).thenReturn(Optional.of(car));
+
+        Car expectedCar = carRepository.findById(carId).get();
+        Car actualCar = carService.getCarById(carId);
+        Assertions.assertEquals(expectedCar, actualCar);
     }
 
-    @ParameterizedTest
-    @MethodSource("createCarIdVariety")
-    void getCarById(Long carId, boolean expectCarInDB) {
-        if (expectCarInDB) {
-            var actualCar = carService.getCarById(carId);
-            Assertions.assertNotNull(actualCar);
+    @Test
+    void getCarDTOById() {
+        Long carId = 1L;
 
-            var expectedCar = carRepository.findById(carId).get();
-            Assertions.assertEquals(expectedCar, actualCar);
-        } else {
-            var serviceException = Assertions.assertThrows(Exception.class, () -> {
-                carService.getCarById(carId);
-            });
+        CarStatus carStatus = new CarStatus();
+        carStatus.setId(carId);
+        carStatus.setCarStatus(CarStatusEnum.READY);
 
-            if (carId == null) {
-                Assertions.assertEquals("Car id cannot be null", serviceException.getMessage());
-            } else {
-                Assertions.assertEquals("Car with id " + carId + " doesn't exist", serviceException.getMessage());
-            }
-        }
-    }
+        CarModel carModel = new CarModel();
+        carModel.setId(1L);
+        carModel.setModel("Model");
+        carModel.setBodyColor("Colour");
+        carModel.setBodyType("Type");
+        carModel.setBrandName("Brand");
+        carModel.setEngineVolume(1.6);
+        carModel.setInteriorColor("Colour");
+        carModel.setFuelType("Type");
+        carModel.setPricePerMinute(2);
+        carModel.setTransmission("Transmission");
 
-    @ParameterizedTest
-    @MethodSource("createCarIdVariety")
-    void getCarDTOById(Long carId, boolean expectCarInDB) {
-        if (expectCarInDB) {
-            var carDTO = carService.getCarDTOById(carId);
-            Assertions.assertNotNull(carDTO);
-            Assertions.assertEquals(CarDTO.class, carDTO.getClass());
+        Car car = new Car();
+        car.setId(carId);
+        car.setStateNumber("1234SN-7");
+        car.setCarStatus(carStatus);
+        car.setCarModel(carModel);
+        when(carRepository.findById(carId)).thenReturn(Optional.of(car));
 
-            //checking fields
-            var actualCar = carRepository.findById(carId).get();
-            Assertions.assertEquals(actualCar.getId(), carDTO.getId());
-            Assertions.assertEquals(actualCar.getStateNumber(), carDTO.getStateNumber());
-            Assertions.assertEquals(actualCar.getCarModel().getModel(), carDTO.getCarModel().getModel());
-            Assertions.assertEquals(actualCar.getCarStatus().getId(), carDTO.getCarStatus().getId());
-        } else {
-            var serviceException = Assertions.assertThrows(ServiceException.class, () -> {
-                carService.getCarDTOById(carId);
-            });
+        CarDTO expectedCarDTO = new CarDTO();
+        CarStatusDTO carStatusDTO = new CarStatusDTO();
+        CarModelDTO carModelDTO = new CarModelDTO();
 
-            if (carId == null) {
-                Assertions.assertEquals("Car id cannot be null", serviceException.getMessage());
-            } else {
-                Assertions.assertEquals("Car with id " + carId + " doesn't exist", serviceException.getMessage());
-            }
-        }
+        carStatusDTO.setCarStatus(car.getCarStatus().getCarStatus().name());
+        carModelDTO.setModel(car.getCarModel().getModel());
+
+        expectedCarDTO.setCarStatus(carStatusDTO);
+        expectedCarDTO.setCarModel(carModelDTO);
+        expectedCarDTO.setId(car.getId());
+        expectedCarDTO.setStateNumber(car.getStateNumber());
+
+        when(convertService.getDTOFromObject(car, CarDTO.class)).thenReturn(expectedCarDTO);
+
+        convertService.getDTOFromObject(car, CarDTO.class);
+
+        CarDTO actualCarDTO = carService.getCarDTOById(carId);
+        Assertions.assertEquals(expectedCarDTO, actualCarDTO);
     }
 
     @Test
     void getAll() {
-        var expectedCars = carRepository.findAll();
-        var resultCars = carService.getAll();
-        Assertions.assertEquals(expectedCars, resultCars);
     }
 
     @Test
     void getAllCarDTOs() {
-        var cars = carRepository.findAll();
-        var expectedCarDTOs = convertService.getDTOsFromObjectList(cars, CarDTO.class);
-        var resultCarDTOs = carService.getAllCarDTOs();
-        Assertions.assertEquals(expectedCarDTOs, resultCarDTOs);
     }
 
     @Test
     void getAllCarDTOsByPage() {
-        Pageable pageable = Pageable.unpaged();
-        var cars = carRepository.findAll(pageable);
-        var expectedCarDTOs = convertService.getPageDTOFromPage(cars, CarDTO.class);
-        var resultCarDTOs = carService.getAllCarDTOsByPage(pageable);
-        Assertions.assertEquals(expectedCarDTOs, resultCarDTOs);
     }
 
     @Test
     void getAvailableCars() {
-        var begin = LocalDateTime.of(2017, Month.JULY, 9, 11, 10, 0);
-        var end = LocalDateTime.of(2017, Month.JULY, 9, 18, 20, 0);
-        var expectedAvailableCars = carRepository.findAvailableCars(1L, begin, end);
-        var availableCars = carService.getAvailableCars(1L, begin, end);
-        Assertions.assertEquals(expectedAvailableCars, availableCars);
     }
 
     @Test
     void updateCarStatusFrom() {
-        //preparation to test
-        Long statusId = 3L;
-        var carStatus = carStatusRepository.findById(statusId).get();
-        carStatusDTO.setId(statusId);
-        carStatusDTO.setCarStatus(carStatus.getCarStatus().name());
+    }
 
-        Long carId = 1L;
-        carDTO.setId(carId);
-        carDTO.setCarStatus(carStatusDTO);
-
-        var car = carRepository.findById(carId).get();
-
-        //testing
-        Assertions.assertNotEquals(car.getCarStatus(), carStatus);
-
-        //todo not clear what is happening in this test
-        carService.updateCarStatusFrom(carDTO);
-        Assertions.assertEquals(car.getCarStatus(), carStatus);
+    @Test
+    void updateStateNumber() {
     }
 }

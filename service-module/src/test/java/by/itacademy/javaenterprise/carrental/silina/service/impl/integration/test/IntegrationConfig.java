@@ -1,4 +1,4 @@
-package by.itacademy.javaenterprise.carrental.silina.service.impl;
+package by.itacademy.javaenterprise.carrental.silina.service.impl.integration.test;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -13,11 +13,6 @@ import javax.sql.DataSource;
 @ComponentScan
 @Configuration
 @Testcontainers
-/*@EnableJpaRepositories(basePackages = {"by.itacademy.javaenterprise.carrental.silina.repository"})
-@EntityScan("by.itacademy.javaenterprise.carrental.silina.repository.model")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)*/
-
-//todo you should try to put here annotations from other test classes to avoid pollution of code
 public class IntegrationConfig {
 
     @Bean
@@ -25,7 +20,7 @@ public class IntegrationConfig {
         final var mySQLContainer = new MySQLContainer("mysql:8.0.27")
                 .withDatabaseName("CAR_RENTAL");
 
-        mySQLContainer.start();
+        mySQLContainer.withReuse(true).start();
         return mySQLContainer;
     }
 

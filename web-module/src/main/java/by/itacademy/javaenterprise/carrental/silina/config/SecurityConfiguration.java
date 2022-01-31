@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/users/add", "/users/registration").permitAll()
 
                 .antMatchers("/orders", "orders/list", "/saveOrder", "/showUpdateForm",
-                        "/users", "/invoices/*", "/cars/*", "/api/cars*")
+                        "/users", "/invoices/*", "/cars/*", "/api/cars/*", "/api/cars")
                 .hasAuthority(RoleEnum.ADMIN.name())
 
                 .antMatchers("/orders/add", "/orders/form",
