@@ -16,13 +16,13 @@ import static by.itacademy.javaenterprise.carrental.silina.repository.constant.S
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
     @Query("SELECT c FROM Car c WHERE c.carStatus = :status")
-    List<Car> getCarsByStatus(@Param("status") CarStatus carStatus);
+    List<Car> findCarsByStatus(@Param("status") CarStatus carStatus);
 
     @Query(value = "SELECT * FROM CAR C " +
             "WHERE C.CAR_MODEL_ID = :modelId " +
             "  AND C.CAR_STATUS_ID NOT IN (SELECT CS.ID FROM CAR_STATUS CS WHERE CS.STATUS IN (" + CAR_STATUS_NOR_AVAILABLE_FOR_ORDER + "))" +
             "  AND NOT EXISTS (SELECT NULL FROM `ORDER` O " +
-            //отсекаем ордеры завершенные до текущ момента (до даты-времени оформления нашего заказа)
+            //cut off orders which are completed till this moment (till date and time new car ordering)
             "                  WHERE SYSDATE() < O.DATE_TO " +
             "                    AND C.ID = O.CAR_ID " +
             "                    AND O.ORDER_STATUS_ID NOT IN (SELECT OS.ID " +
