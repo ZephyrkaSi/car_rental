@@ -6,6 +6,7 @@ import by.itacademy.javaenterprise.carrental.silina.repository.model.CarModel;
 import by.itacademy.javaenterprise.carrental.silina.repository.model.CarStatus;
 import by.itacademy.javaenterprise.carrental.silina.repository.model.CarStatusEnum;
 import by.itacademy.javaenterprise.carrental.silina.service.CarService;
+import by.itacademy.javaenterprise.carrental.silina.service.CarStatusService;
 import by.itacademy.javaenterprise.carrental.silina.service.ConvertService;
 import by.itacademy.javaenterprise.carrental.silina.service.dto.CarDTO;
 import by.itacademy.javaenterprise.carrental.silina.service.dto.CarModelDTO;
@@ -32,6 +33,9 @@ class CarServiceImplTest {
     private CarService carService;
     @MockBean
     private ConvertService convertService;
+    @MockBean
+    private CarStatusService carStatusService;
+
 
     @Test
     void getCarById() {
